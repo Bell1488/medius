@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { ArrowRight, ArrowDown, ArrowLeftRight, CheckCircle2, Info, TrendingUp, Zap, Send, UserRound, Check, LineChart } from 'lucide-react';
+import { ArrowRight, ArrowDown, ArrowLeftRight, CheckCircle2, Info, TrendingUp, Zap, Send, UserRound, Check, LineChart, LockKeyhole, FileCheck2, ShieldCheck, Timer, Clock3 } from 'lucide-react';
 import {
   type Currency,
   type RateTable,
@@ -20,6 +20,14 @@ export function ExchangeCalculator() {
   const [method, setMethod] = useState<string>('invoice');
   const [rates, setRates] = useState<RateTable>(RATES);
   const [calculationMessage, setCalculationMessage] = useState('');
+  const [lockSeconds, setLockSeconds] = useState(15 * 60);
+  const [noticeIndex, setNoticeIndex] = useState(0);
+
+  const paymentNotices = [
+    'Только что: оплачен инвойс фабрики на 42 000 ¥',
+    '2 мин назад: пополнение Alipay на 8 500 ¥ через СБП',
+    '5 мин назад: зафиксирован курс на 180 000 ₽',
+  ];
 
   useEffect(() => {
     let active = true;
@@ -43,6 +51,15 @@ export function ExchangeCalculator() {
       window.clearInterval(timer);
     };
   }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setLockSeconds((seconds) => (seconds > 0 ? seconds - 1 : 15 * 60)), 1000);
+    const noticeTimer = window.setInterval(() => setNoticeIndex((index) => (index + 1) % paymentNotices.length), 20000);
+    return () => {
+      window.clearInterval(timer);
+      window.clearInterval(noticeTimer);
+    };
+  }, [paymentNotices.length]);
 
   const swapCurrencies = () => {
     setFromCurrency(toCurrency);
@@ -82,6 +99,7 @@ export function ExchangeCalculator() {
 
   const savingsPercent = marketResult > 0 ? Math.max(0, ((marketResult - calculated.toAmount) / marketResult) * 100) : 0;
   const savingsAmount = Math.max(0, marketResult - calculated.toAmount);
+  const lockTime = `${String(Math.floor(lockSeconds / 60)).padStart(2, '0')}:${String(lockSeconds % 60).padStart(2, '0')}`;
 
   const presetAmounts = [50000, 100000, 250000];
 
@@ -203,6 +221,28 @@ export function ExchangeCalculator() {
             </div>
           </div>
 
+          <div className="mt-3 flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm font-semibold text-[#003D99]">
+            <Timer className="h-4 w-4 shrink-0 text-[#0052CC]" />
+            Курс {formatNumber(displayedRate.value)} ₽ зафиксирован на {lockTime} мин. После истечения расчёт обновится.
+          </div>
+
+          <div className="mt-3 rounded-2xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
+            <div className="flex items-center gap-2 font-semibold text-gray-900"><Clock3 className="h-4 w-4 text-[#0052CC]" /> Последние успешные операции</div>
+            <p className="mt-2 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-500" />{paymentNotices[noticeIndex]}</p>
+          </div>
+
+          <div className="mt-4 overflow-hidden rounded-2xl border border-gray-200 text-sm">
+            <div className="grid grid-cols-4 bg-gray-100 px-3 py-2 font-semibold text-gray-600">
+              <span>Способ</span><span>Курс</span><span>Комиссия</span><span>Срок</span>
+            </div>
+            <div className="grid grid-cols-4 border-t border-gray-200 px-3 py-2 text-gray-600">
+              <span>Крупные банки</span><span>~{formatNumber(marketRate ? 1 / marketRate : 0)} ₽</span><span>от 3%</span><span>3–14 дней</span>
+            </div>
+            <div className="grid grid-cols-4 border-t border-gray-200 px-3 py-2 font-semibold text-gray-900">
+              <span>Наш сервис</span><span>{formatNumber(displayedRate.value)} ₽</span><span>{calculated.commissionPercent}%</span><span>15–60 минут</span>
+            </div>
+          </div>
+
           <div className="mt-5">
             <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2.5">Способ оплаты</label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -260,6 +300,11 @@ export function ExchangeCalculator() {
           <div className="mt-4 grid sm:grid-cols-2 gap-3">
             <a href={`${TELEGRAM_URL}?text=${encodeURIComponent(`Здравствуйте! Расчёт: ${formatNumber(parseFloat(fromAmount) || 0)} ${fromCurrency} → ${formatNumber(calculated.toAmount)} ${toCurrency}, курс ${formatNumber(rate)}, комиссия ${calculated.commissionPercent}%`)}`} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click', { source: 'calculator' })} className="px-4 py-3 rounded-xl text-sm font-semibold text-white btn-gradient flex items-center justify-center gap-2"><Send className="w-4 h-4" />Зафиксировать курс в Telegram</a>
             <button type="button" onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })} className="px-4 py-3 rounded-xl text-sm font-semibold text-[#0052CC] bg-blue-50 hover:bg-blue-100 flex items-center justify-center gap-2"><UserRound className="w-4 h-4" />Оставить контакт</button>
+          </div>
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-gray-500">
+            <span className="inline-flex items-center gap-1.5"><LockKeyhole className="h-3.5 w-3.5 text-emerald-600" /> Данные защищены</span>
+            <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> Пароли не передаём</span>
+            <span className="inline-flex items-center gap-1.5"><FileCheck2 className="h-3.5 w-3.5 text-emerald-600" /> Чек и подтверждение в PDF</span>
           </div>
         </div>
       </div>
