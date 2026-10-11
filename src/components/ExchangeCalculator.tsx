@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { ArrowRight, ArrowDown, ArrowLeftRight, CheckCircle2, Info, TrendingUp, Zap, Send, UserRound, Check, LineChart, LockKeyhole, FileCheck2, ShieldCheck, Timer, Clock3 } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
+import { ArrowLeftRight, Info, TrendingUp, Send, UserRound, Check, LineChart, LockKeyhole, FileCheck2, ShieldCheck, Timer, Clock3 } from 'lucide-react';
 import {
   type Currency,
   type RateTable,
@@ -19,7 +19,6 @@ export function ExchangeCalculator() {
   const [fromAmount, setFromAmount] = useState<string>('100000');
   const [method, setMethod] = useState<string>('invoice');
   const [rates, setRates] = useState<RateTable>(RATES);
-  const [calculationMessage, setCalculationMessage] = useState('');
   const [lockSeconds, setLockSeconds] = useState(15 * 60);
   const [noticeIndex, setNoticeIndex] = useState(0);
 
@@ -103,16 +102,6 @@ export function ExchangeCalculator() {
 
   const presetAmounts = [50000, 100000, 250000];
 
-  const handleCalculate = useCallback(() => {
-    const amount = parseFloat(fromAmount) || 0;
-    if (amount <= 0) {
-      setCalculationMessage('Введите сумму больше нуля.');
-      return;
-    }
-    trackGoal('calculator_submit', { fromCurrency, toCurrency, method });
-    setCalculationMessage(`Расчёт обновлён: ${formatNumber(calculated.toAmount)} ${toCurrency}`);
-  }, [fromAmount, fromCurrency, toCurrency, method, calculated.toAmount]);
-
   return (
     <div id="calculator" className="relative py-10 sm:py-14 scroll-mt-20">
       <div className="max-w-3xl mx-auto px-5 sm:px-8">
@@ -132,8 +121,8 @@ export function ExchangeCalculator() {
             <span>Минимальная сумма заявки — <strong>500 CNY</strong>.</span>
           </div>
 
-          <div className="grid sm:grid-cols-[1fr_auto_1fr] gap-3 sm:gap-2 items-end">
-            <div>
+          <div className="grid items-start gap-3 sm:grid-cols-[1fr_auto_1fr] sm:gap-2">
+            <div className="min-w-0">
               <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Отдаю</label>
               <div className="relative">
                 <input
@@ -169,13 +158,13 @@ export function ExchangeCalculator() {
 
             <button
               onClick={swapCurrencies}
-              className="self-end mb-1 w-11 h-11 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0052CC] flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+              className="mt-8 h-11 w-11 self-start rounded-xl bg-blue-50 text-[#0052CC] transition-all hover:scale-110 hover:bg-blue-100 active:scale-95 sm:mt-8"
               aria-label="Поменять валюты"
             >
               <ArrowLeftRight className="w-5 h-5" />
             </button>
 
-            <div>
+            <div className="min-w-0">
               <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Получаю</label>
               <div className="relative">
                 <input
@@ -195,19 +184,13 @@ export function ExchangeCalculator() {
             <p className="mt-2 text-xs text-gray-400">Для оптовых платежей выберите 250 000 ₽ и выше.</p>
           )}
 
-          <div className="mt-5 flex flex-wrap items-center gap-2 px-4 py-3 bg-gray-50 rounded-xl text-sm">
-            <Info className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <span className="text-gray-500">
-              Курс: <span className="font-semibold text-gray-700">1 {displayedRate.from} = {formatNumber(displayedRate.value)} {displayedRate.to}</span>
-            </span>
-            <span className="text-gray-300 mx-1">·</span>
-            <span className="text-gray-500">
-              Комиссия: <span className="font-semibold text-gray-700">{calculated.commissionPercent}%</span>
-            </span>
-            <span className="text-gray-300 mx-1">·</span>
-            <span className="text-gray-500">
-              К доплате: <span className="font-semibold text-gray-700">{CURRENCY_SYMBOLS[fromCurrency]}{formatNumber(calculated.commissionAmount)}</span>
-            </span>
+          <div className="mt-5 flex items-start gap-2 rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm text-[#003D99]">
+            <Timer className="mt-0.5 h-4 w-4 shrink-0 text-[#0052CC]" />
+            <p>
+              <span className="font-semibold">Курс {formatNumber(displayedRate.value)} ₽ зафиксирован на {lockTime} мин.</span>{' '}
+              После истечения расчёт обновится.
+              <span className="ml-2 text-blue-800/75">Комиссия {calculated.commissionPercent}% · К доплате {CURRENCY_SYMBOLS[fromCurrency]}{formatNumber(calculated.commissionAmount)}</span>
+            </p>
           </div>
 
           <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 text-emerald-900 shadow-sm">
@@ -219,11 +202,6 @@ export function ExchangeCalculator() {
               <p className="inline-flex items-center gap-2 font-semibold"><Check className="h-4 w-4" /> Курс зафиксирован до перевода</p>
               <p className="mt-2 inline-flex items-start gap-2 text-emerald-800/80"><LineChart className="mt-0.5 h-4 w-4 shrink-0" /> От {formatNumber(parseFloat(fromAmount) || 0)} {fromCurrency} можно сэкономить до {formatNumber(savingsAmount)} {toCurrency}</p>
             </div>
-          </div>
-
-          <div className="mt-3 flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm font-semibold text-[#003D99]">
-            <Timer className="h-4 w-4 shrink-0 text-[#0052CC]" />
-            Курс {formatNumber(displayedRate.value)} ₽ зафиксирован на {lockTime} мин. После истечения расчёт обновится.
           </div>
 
           <div className="mt-3 rounded-2xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
@@ -267,39 +245,12 @@ export function ExchangeCalculator() {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleCalculate}
-            className="w-full mt-6 px-7 py-4 text-base font-semibold text-white btn-gradient rounded-xl flex items-center justify-center gap-2.5 group"
-          >
-            <Zap className="w-5 h-5" />
-            Рассчитать платёж
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-          </button>
-
-          {calculationMessage && (
-            calculationMessage.includes('Введите') ? (
-              <p role="alert" className="text-center text-sm mt-3 text-red-500">{calculationMessage}</p>
-            ) : (
-              <div role="status" aria-live="polite" className="mt-4 rounded-2xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-[#003D99] shadow-sm animate-fade-in">
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-[#0052CC]" />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold">Расчёт готов</p>
-                    <p className="text-xs text-blue-800/70">{calculationMessage}. Выберите следующий шаг ниже.</p>
-                  </div>
-                  <ArrowDown className="w-5 h-5 flex-shrink-0 animate-bounce text-[#0052CC]" aria-hidden="true" />
-                </div>
-              </div>
-            )
-          )}
-
           <p className="text-center text-xs text-gray-400 mt-3">
             Предварительный расчёт. Финальные условия подтвердит менеджер после проверки реквизитов.
           </p>
-          <div className="mt-4 grid sm:grid-cols-2 gap-3">
-            <a href={`${TELEGRAM_URL}?text=${encodeURIComponent(`Здравствуйте! Расчёт: ${formatNumber(parseFloat(fromAmount) || 0)} ${fromCurrency} → ${formatNumber(calculated.toAmount)} ${toCurrency}, курс ${formatNumber(rate)}, комиссия ${calculated.commissionPercent}%`)}`} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click', { source: 'calculator' })} className="px-4 py-3 rounded-xl text-sm font-semibold text-white btn-gradient flex items-center justify-center gap-2"><Send className="w-4 h-4" />Зафиксировать курс в Telegram</a>
-            <button type="button" onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })} className="px-4 py-3 rounded-xl text-sm font-semibold text-[#0052CC] bg-blue-50 hover:bg-blue-100 flex items-center justify-center gap-2"><UserRound className="w-4 h-4" />Оставить контакт</button>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <a href={`${TELEGRAM_URL}?text=${encodeURIComponent(`Здравствуйте! Расчёт: ${formatNumber(parseFloat(fromAmount) || 0)} ${fromCurrency} → ${formatNumber(calculated.toAmount)} ${toCurrency}, курс ${formatNumber(rate)}, комиссия ${calculated.commissionPercent}%`)}`} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click', { source: 'calculator' })} className="flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white btn-gradient"><Send className="h-4 w-4" />Зафиксировать курс в Telegram</a>
+            <button type="button" onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })} className="flex items-center justify-center gap-2 rounded-xl bg-blue-50 px-4 py-3 text-sm font-semibold text-[#0052CC] hover:bg-blue-100"><UserRound className="h-4 w-4" />Оставить заявку</button>
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-gray-500">
             <span className="inline-flex items-center gap-1.5"><LockKeyhole className="h-3.5 w-3.5 text-emerald-600" /> Данные защищены</span>
