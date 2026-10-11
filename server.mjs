@@ -20,7 +20,7 @@ const rateUpdateIntervalMs = Math.max(Number(process.env.RATE_UPDATE_INTERVAL_MS
 const rateState = { rates: null, officialRubRates: null, updatedAt: null };
 const xmlParser = new XMLParser({ ignoreAttributes: false });
 const rateLimit = new Map();
-const minimumLeadAmountCny = 1000;
+const minimumLeadAmountCny = 500;
 
 function requestText(url, agent) {
   return new Promise((resolve, reject) => {

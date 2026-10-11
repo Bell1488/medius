@@ -95,7 +95,7 @@ export function ExchangeCalculator() {
 
           <div className="mb-5 flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm text-[#003D99]">
             <Info className="w-4 h-4 flex-shrink-0 text-[#0052CC]" />
-            <span>Минимальная сумма заявки — <strong>1 000 CNY</strong>.</span>
+            <span>Минимальная сумма заявки — <strong>500 CNY</strong>.</span>
           </div>
 
           <div className="grid sm:grid-cols-[1fr_auto_1fr] gap-3 sm:gap-2 items-end">
