@@ -72,6 +72,7 @@ SOCKS5H_PROXY=socks5h://user:password@proxy.example.com:1080
 PORT=8787
 VITE_YANDEX_METRIKA_ID=12345678
 RATE_MARKUP_PERCENT=3
+BANK_ADVANTAGE_PERCENT=2
 RATE_UPDATE_INTERVAL_MS=3600000
 ```
 
@@ -91,7 +92,7 @@ chmod 600 /etc/prorest.env
 
 Токен Telegram и SOCKS5-прокси нельзя добавлять в GitHub или frontend.
 
-Курс ЦБ РФ загружается сервером из `https://www.cbr.ru/scripts/XML_daily.asp` и кэшируется на один час. `RATE_MARKUP_PERCENT=3` задает курс для клиента на 3% менее выгодный, чем официальный курс ЦБ, в обоих направлениях. ЦБ РФ публикует официальные значения не каждый час, поэтому в течение дня несколько обновлений могут вернуть одно и то же значение.
+Курс ЦБ РФ загружается сервером из `https://www.cbr.ru/scripts/XML_daily.asp` и кэшируется на один час. Если задан `BANK_RATE_URL`, сервер ожидает JSON с полями `buyCnyRub` и `sellCnyRub` и использует их как банковский ориентир. `BANK_ADVANTAGE_PERCENT=2` делает клиентский курс на 2% выгоднее этого ориентира. При недоступном или некорректном банковском источнике используется курс ЦБ РФ.
 
 ## 5. Production-сборка
 

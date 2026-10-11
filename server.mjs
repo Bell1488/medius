@@ -14,8 +14,9 @@ const chatId = process.env.TELEGRAM_CHAT_ID;
 const proxyUrl = process.env.SOCKS5H_PROXY;
 const telegramAgent = proxyUrl ? new SocksProxyAgent(proxyUrl) : undefined;
 const cbrAgent = proxyUrl ? new SocksProxyAgent(proxyUrl) : undefined;
+const bankRateUrl = process.env.BANK_RATE_URL;
+const bankAdvantagePercent = Math.min(Math.max(Number(process.env.BANK_ADVANTAGE_PERCENT ?? 2), 0), 10);
 // Positive values make the customer rate less favorable than the CBR reference rate.
-const rateMarkupPercent = Math.min(Math.max(Number(process.env.RATE_MARKUP_PERCENT ?? 3), 0), 100);
 const rateUpdateIntervalMs = Math.max(Number(process.env.RATE_UPDATE_INTERVAL_MS || 3600000), 60000);
 const rateState = { rates: null, officialRubRates: null, updatedAt: null };
 const xmlParser = new XMLParser({ ignoreAttributes: false });
@@ -68,16 +69,34 @@ async function updateRates() {
       }
     }
 
-    // Apply the same markup against CBR in both customer directions.
-    // This keeps the customer rate 1-2% less favorable than the reference rate.
-    const customerFactor = 1 - rateMarkupPercent / 100;
+    // Use an approved bank-rate feed when configured. The feed must return
+    // { buyCnyRub, sellCnyRub } in RUB per CNY. Otherwise CBR remains the fallback.
+    let referenceBuyCnyRub = rubRates.CNY;
+    let referenceSellCnyRub = rubRates.CNY;
+    if (bankRateUrl) {
+      try {
+        const bankData = JSON.parse(await requestText(bankRateUrl, cbrAgent));
+        if (Number.isFinite(Number(bankData.buyCnyRub)) && Number.isFinite(Number(bankData.sellCnyRub))) {
+          referenceBuyCnyRub = Number(bankData.buyCnyRub);
+          referenceSellCnyRub = Number(bankData.sellCnyRub);
+        }
+      } catch (error) {
+        console.error(`Could not load bank rate feed: ${error.message}`);
+      }
+    }
+
+    rates.RUB_CNY = Number((1 / referenceBuyCnyRub).toFixed(8));
+    rates.CNY_RUB = Number(referenceSellCnyRub.toFixed(8));
+
+    // Make the customer rate 2-3% better than the selected bank reference.
+    const customerFactor = 1 + bankAdvantagePercent / 100;
     rates.RUB_CNY = Number((rates.RUB_CNY * customerFactor).toFixed(8));
     rates.CNY_RUB = Number((rates.CNY_RUB * customerFactor).toFixed(8));
 
     rateState.rates = rates;
     rateState.officialRubRates = rubRates;
     rateState.updatedAt = new Date().toISOString();
-    console.log(`CBR rates updated at ${rateState.updatedAt}; customer markup ${rateMarkupPercent}%`);
+    console.log(`Rates updated at ${rateState.updatedAt}; bank advantage ${bankAdvantagePercent}%`);
   } catch (error) {
     console.error(`Could not update CBR rates: ${error.message}`);
   }
