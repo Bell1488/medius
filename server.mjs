@@ -88,7 +88,7 @@ async function updateRates() {
     rates.RUB_CNY = Number((1 / referenceBuyCnyRub).toFixed(8));
     rates.CNY_RUB = Number(referenceSellCnyRub.toFixed(8));
 
-    // Make the customer rate 2-3% better than the selected bank reference.
+    // Make the customer rate 2% better than the selected bank/CBR reference.
     const customerFactor = 1 + bankAdvantagePercent / 100;
     rates.RUB_CNY = Number((rates.RUB_CNY * customerFactor).toFixed(8));
     rates.CNY_RUB = Number((rates.CNY_RUB * customerFactor).toFixed(8));
