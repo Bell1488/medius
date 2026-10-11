@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { ArrowRight, ArrowDown, ArrowLeftRight, CheckCircle2, Info, TrendingUp, Zap, Send, UserRound } from 'lucide-react';
+import { ArrowRight, ArrowDown, ArrowLeftRight, CheckCircle2, Info, TrendingUp, Zap, Send, UserRound, Check, LineChart } from 'lucide-react';
 import {
   type Currency,
   type RateTable,
@@ -68,6 +68,20 @@ export function ExchangeCalculator() {
     const toAmount = baseResult - commissionAmount;
     return { toAmount, commissionPercent, commissionAmount, total: baseResult };
   }, [fromAmount, rate, method]);
+
+  const marketRate = useMemo(() => {
+    if (fromCurrency === 'RUB' && toCurrency === 'CNY') return rate / 0.97;
+    if (fromCurrency === 'CNY' && toCurrency === 'RUB') return rate / 0.97;
+    return rate;
+  }, [fromCurrency, toCurrency, rate]);
+
+  const marketResult = useMemo(() => {
+    const amount = parseFloat(fromAmount) || 0;
+    return amount * marketRate;
+  }, [fromAmount, marketRate]);
+
+  const savingsPercent = marketResult > 0 ? Math.max(0, ((marketResult - calculated.toAmount) / marketResult) * 100) : 0;
+  const savingsAmount = Math.max(0, marketResult - calculated.toAmount);
 
   const handleCalculate = useCallback(() => {
     const amount = parseFloat(fromAmount) || 0;
@@ -152,6 +166,17 @@ export function ExchangeCalculator() {
             <span className="text-gray-500">
               К доплате: <span className="font-semibold text-gray-700">{CURRENCY_SYMBOLS[fromCurrency]}{formatNumber(calculated.commissionAmount)}</span>
             </span>
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 text-emerald-900 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold">
+              <span className="inline-flex items-center gap-2"><LineChart className="h-4 w-4" /> Выгоднее банковского курса</span>
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700">Экономия ~{formatNumber(savingsPercent)}%</span>
+            </div>
+            <div className="mt-3 border-t border-emerald-200/80 pt-3 text-sm">
+              <p className="inline-flex items-center gap-2 font-semibold"><Check className="h-4 w-4" /> Курс зафиксирован до перевода</p>
+              <p className="mt-2 inline-flex items-start gap-2 text-emerald-800/80"><LineChart className="mt-0.5 h-4 w-4 shrink-0" /> От {formatNumber(parseFloat(fromAmount) || 0)} {fromCurrency} можно сэкономить до {formatNumber(savingsAmount)} {toCurrency}</p>
+            </div>
           </div>
 
           <div className="mt-5">
