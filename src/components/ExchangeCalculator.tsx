@@ -11,6 +11,8 @@ import { trackGoal } from '@/lib/analytics';
 import { TELEGRAM_URL } from '@/lib/contacts';
 
 const CURRENCIES: Currency[] = ['RUB', 'CNY', 'USD'];
+const BANK_CNY_RUB_RATE = 13.05;
+const CUSTOMER_BANK_ADVANTAGE = 0.03;
 
 export function ExchangeCalculator() {
   const [fromCurrency, setFromCurrency] = useState<Currency>('RUB');
@@ -69,16 +71,21 @@ export function ExchangeCalculator() {
   };
 
   const rate = useMemo(() => getRate(fromCurrency, toCurrency, rates), [fromCurrency, toCurrency, rates]);
+  const customerRate = useMemo(() => {
+    if (fromCurrency === 'RUB' && toCurrency === 'CNY') return (1 / BANK_CNY_RUB_RATE) * (1 + CUSTOMER_BANK_ADVANTAGE);
+    if (fromCurrency === 'CNY' && toCurrency === 'RUB') return BANK_CNY_RUB_RATE * (1 + CUSTOMER_BANK_ADVANTAGE);
+    return rate;
+  }, [fromCurrency, toCurrency, rate]);
   const displayedRate = useMemo(() => {
     if (fromCurrency === 'RUB' && toCurrency === 'CNY') {
-      return { from: 'CNY' as Currency, to: 'RUB' as Currency, value: rate ? 1 / rate : 0 };
+      return { from: 'CNY' as Currency, to: 'RUB' as Currency, value: 1 / customerRate };
     }
-    return { from: fromCurrency, to: toCurrency, value: rate };
-  }, [fromCurrency, toCurrency, rate]);
+    return { from: fromCurrency, to: toCurrency, value: customerRate };
+  }, [fromCurrency, toCurrency, customerRate]);
 
   const calculated = useMemo(() => {
     const amount = parseFloat(fromAmount) || 0;
-    const baseResult = amount * rate;
+    const baseResult = amount * customerRate;
     const commissionPercent =
       method === 'invoice' ? 1.5 :
       method === 'alipay' ? 1.8 :
@@ -86,11 +93,11 @@ export function ExchangeCalculator() {
     const commissionAmount = baseResult * (commissionPercent / 100);
     const toAmount = baseResult - commissionAmount;
     return { toAmount, commissionPercent, commissionAmount, total: baseResult };
-  }, [fromAmount, rate, method]);
+  }, [fromAmount, customerRate, method]);
 
   const marketRate = useMemo(() => {
-    if (fromCurrency === 'RUB' && toCurrency === 'CNY') return rate / 1.02;
-    if (fromCurrency === 'CNY' && toCurrency === 'RUB') return rate / 1.02;
+    if (fromCurrency === 'RUB' && toCurrency === 'CNY') return 1 / BANK_CNY_RUB_RATE;
+    if (fromCurrency === 'CNY' && toCurrency === 'RUB') return BANK_CNY_RUB_RATE;
     return rate;
   }, [fromCurrency, toCurrency, rate]);
 
@@ -99,8 +106,8 @@ export function ExchangeCalculator() {
     return amount * marketRate;
   }, [fromAmount, marketRate]);
 
-  const savingsPercent = marketResult > 0 ? Math.max(0, ((marketResult - calculated.toAmount) / marketResult) * 100) : 0;
-  const savingsAmount = Math.max(0, marketResult - calculated.toAmount);
+  const savingsPercent = marketResult > 0 ? Math.max(0, ((calculated.toAmount - marketResult) / marketResult) * 100) : 0;
+  const savingsAmount = Math.max(0, calculated.toAmount - marketResult);
   const lockTime = `${String(Math.floor(lockSeconds / 60)).padStart(2, '0')}:${String(lockSeconds % 60).padStart(2, '0')}`;
   const cnyAmount = fromCurrency === 'CNY' ? Number(fromAmount) : calculated.toAmount;
   const showMinimumWarning = toCurrency === 'CNY' && Number.isFinite(cnyAmount) && cnyAmount > 0 && cnyAmount < 500;
@@ -198,9 +205,9 @@ export function ExchangeCalculator() {
           <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 text-emerald-900 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold">
               <span className="inline-flex items-center gap-2"><LineChart className="h-4 w-4" /> Выгоднее банковского курса</span>
-              <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700">Экономия ~{formatNumber(savingsPercent)}%</span>
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700">Выгоднее на ~{formatNumber(savingsPercent)}%</span>
             </div>
-            <p className="mt-3 border-t border-emerald-200/80 pt-3 text-sm text-emerald-800/80">Экономия до {formatNumber(savingsAmount)} {toCurrency} на выбранной сумме.</p>
+            <p className="mt-3 border-t border-emerald-200/80 pt-3 text-sm text-emerald-800/80">Экономия до {formatNumber(savingsAmount)} {toCurrency} по сравнению с банком.</p>
           </div>
 
           <div className="mt-4 overflow-hidden rounded-2xl border border-gray-200 text-sm">
@@ -208,10 +215,10 @@ export function ExchangeCalculator() {
               <span>Способ</span><span>Курс</span><span>Комиссия</span><span>Срок</span>
             </div>
             <div className="grid grid-cols-4 border-t border-gray-200 px-3 py-2 text-gray-600">
-              <span>Курс ЦБ РФ</span><span>~{formatNumber(marketRate ? 1 / marketRate : 0)} ₽</span><span>ориентир</span><span>обновляется ежедневно</span>
+              <span>Крупные банки</span><span>{formatNumber(BANK_CNY_RUB_RATE)} ₽</span><span>от 3%</span><span>3–14 дней</span>
             </div>
             <div className="grid grid-cols-4 border-t border-gray-200 px-3 py-2 font-semibold text-gray-900">
-              <span>Наш сервис</span><span>{formatNumber(displayedRate.value)} ₽</span><span>на 2% выгоднее</span><span>15–60 минут</span>
+              <span>Наш сервис</span><span>{formatNumber(displayedRate.value)} ₽</span><span>на 3% выгоднее</span><span>15–60 минут</span>
             </div>
           </div>
 
