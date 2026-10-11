@@ -102,6 +102,8 @@ export function ExchangeCalculator() {
   const savingsPercent = marketResult > 0 ? Math.max(0, ((marketResult - calculated.toAmount) / marketResult) * 100) : 0;
   const savingsAmount = Math.max(0, marketResult - calculated.toAmount);
   const lockTime = `${String(Math.floor(lockSeconds / 60)).padStart(2, '0')}:${String(lockSeconds % 60).padStart(2, '0')}`;
+  const cnyAmount = fromCurrency === 'CNY' ? Number(fromAmount) : calculated.toAmount;
+  const showMinimumWarning = toCurrency === 'CNY' && Number.isFinite(cnyAmount) && cnyAmount > 0 && cnyAmount < 500;
 
   const presetAmounts = [50000, 100000, 250000];
 
@@ -119,10 +121,12 @@ export function ExchangeCalculator() {
             </div>
           </div>
 
-          <div className="mb-5 flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm text-[#003D99]">
-            <Info className="w-4 h-4 flex-shrink-0 text-[#0052CC]" />
-            <span>Минимальная сумма заявки — <strong>500 CNY</strong>.</span>
-          </div>
+          {showMinimumWarning && (
+            <div className="mb-5 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              <Info className="h-4 w-4 shrink-0 text-amber-600" />
+              <span>Минимальная сумма заявки — <strong>500 CNY</strong>.</span>
+            </div>
+          )}
 
           <div className="grid items-start gap-3 sm:grid-cols-[1fr_auto_1fr] sm:gap-2">
             <div className="min-w-0">
@@ -199,11 +203,6 @@ export function ExchangeCalculator() {
             <p className="mt-3 border-t border-emerald-200/80 pt-3 text-sm text-emerald-800/80">Экономия до {formatNumber(savingsAmount)} {toCurrency} на выбранной сумме.</p>
           </div>
 
-          <div className="mt-3 rounded-2xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
-            <div className="flex items-center gap-2 font-semibold text-gray-900"><Clock3 className="h-4 w-4 text-[#0052CC]" /> Последние успешные операции</div>
-            <p className="mt-2 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-500" />{paymentNotices[noticeIndex]}</p>
-          </div>
-
           <div className="mt-4 overflow-hidden rounded-2xl border border-gray-200 text-sm">
             <div className="grid grid-cols-4 bg-gray-100 px-3 py-2 font-semibold text-gray-600">
               <span>Способ</span><span>Курс</span><span>Комиссия</span><span>Срок</span>
@@ -251,6 +250,16 @@ export function ExchangeCalculator() {
             <span className="inline-flex items-center gap-1.5"><LockKeyhole className="h-3.5 w-3.5 text-emerald-600" /> Данные защищены</span>
             <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> Пароли не передаём</span>
             <span className="inline-flex items-center gap-1.5"><FileCheck2 className="h-3.5 w-3.5 text-emerald-600" /> Чек и подтверждение в PDF</span>
+          </div>
+        </div>
+        <div className="mt-4 rounded-2xl border border-gray-200 bg-white/80 p-4 text-sm text-gray-700 shadow-sm">
+          <div className="flex items-center gap-2 font-semibold text-gray-900"><Clock3 className="h-4 w-4 text-[#0052CC]" /> Последние успешные операции</div>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            {paymentNotices.slice(0, 4).map((notice, index) => (
+              <p key={notice} className={`flex items-center gap-2 rounded-lg px-3 py-2 ${index === noticeIndex % 4 ? 'bg-emerald-50 text-emerald-800' : 'bg-gray-50'}`}>
+                <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-500" />{notice}
+              </p>
+            ))}
           </div>
         </div>
       </div>
