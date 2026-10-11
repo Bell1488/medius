@@ -89,8 +89,8 @@ export function ExchangeCalculator() {
   }, [fromAmount, rate, method]);
 
   const marketRate = useMemo(() => {
-    if (fromCurrency === 'RUB' && toCurrency === 'CNY') return rate / 0.97;
-    if (fromCurrency === 'CNY' && toCurrency === 'RUB') return rate / 0.97;
+    if (fromCurrency === 'RUB' && toCurrency === 'CNY') return rate / 1.02;
+    if (fromCurrency === 'CNY' && toCurrency === 'RUB') return rate / 1.02;
     return rate;
   }, [fromCurrency, toCurrency, rate]);
 
@@ -208,10 +208,10 @@ export function ExchangeCalculator() {
               <span>Способ</span><span>Курс</span><span>Комиссия</span><span>Срок</span>
             </div>
             <div className="grid grid-cols-4 border-t border-gray-200 px-3 py-2 text-gray-600">
-              <span>Крупные банки</span><span>~{formatNumber(marketRate ? 1 / marketRate : 0)} ₽</span><span>от 3%</span><span>3–14 дней</span>
+              <span>Курс ЦБ РФ</span><span>~{formatNumber(marketRate ? 1 / marketRate : 0)} ₽</span><span>ориентир</span><span>обновляется ежедневно</span>
             </div>
             <div className="grid grid-cols-4 border-t border-gray-200 px-3 py-2 font-semibold text-gray-900">
-              <span>Наш сервис</span><span>{formatNumber(displayedRate.value)} ₽</span><span>{calculated.commissionPercent}%</span><span>15–60 минут</span>
+              <span>Наш сервис</span><span>{formatNumber(displayedRate.value)} ₽</span><span>на 2% выгоднее</span><span>15–60 минут</span>
             </div>
           </div>
 
