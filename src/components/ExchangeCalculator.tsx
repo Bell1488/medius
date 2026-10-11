@@ -16,7 +16,7 @@ const CURRENCIES: Currency[] = ['RUB', 'CNY', 'USD'];
 export function ExchangeCalculator() {
   const [fromCurrency, setFromCurrency] = useState<Currency>('RUB');
   const [toCurrency, setToCurrency] = useState<Currency>('CNY');
-  const [fromAmount, setFromAmount] = useState<string>('50000');
+  const [fromAmount, setFromAmount] = useState<string>('100000');
   const [method, setMethod] = useState<string>('invoice');
   const [rates, setRates] = useState<RateTable>(RATES);
   const [calculationMessage, setCalculationMessage] = useState('');
@@ -83,6 +83,8 @@ export function ExchangeCalculator() {
   const savingsPercent = marketResult > 0 ? Math.max(0, ((marketResult - calculated.toAmount) / marketResult) * 100) : 0;
   const savingsAmount = Math.max(0, marketResult - calculated.toAmount);
 
+  const presetAmounts = [50000, 100000, 250000];
+
   const handleCalculate = useCallback(() => {
     const amount = parseFloat(fromAmount) || 0;
     if (amount <= 0) {
@@ -127,6 +129,24 @@ export function ExchangeCalculator() {
                   <CurrencySelector value={fromCurrency} onChange={setFromCurrency} />
                 </div>
               </div>
+              {fromCurrency === 'RUB' && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {presetAmounts.map((amount) => (
+                    <button
+                      key={amount}
+                      type="button"
+                      onClick={() => setFromAmount(String(amount))}
+                      className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                        Number(fromAmount) === amount
+                          ? 'bg-blue-100 text-[#0052CC]'
+                          : 'bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-[#0052CC]'
+                      }`}
+                    >
+                      {formatNumber(amount)} ₽
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <button
@@ -152,6 +172,10 @@ export function ExchangeCalculator() {
               </div>
             </div>
           </div>
+
+          {fromCurrency === 'RUB' && (
+            <p className="mt-2 text-xs text-gray-400">Для оптовых платежей выберите 250 000 ₽ и выше.</p>
+          )}
 
           <div className="mt-5 flex flex-wrap items-center gap-2 px-4 py-3 bg-gray-50 rounded-xl text-sm">
             <Info className="w-4 h-4 text-gray-400 flex-shrink-0" />
