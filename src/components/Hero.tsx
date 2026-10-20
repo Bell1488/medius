@@ -7,14 +7,14 @@ export function Hero() {
   return (
     <section className="relative pt-28 sm:pt-36 pb-10 sm:pb-14 hero-bg overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-40" />
-      <div className="absolute top-20 -right-32 w-[28rem] h-[28rem] bg-blue-200/25 rounded-full blur-3xl animate-float" />
-      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-cyan-100/30 rounded-full blur-3xl animate-pulse-glow" />
+      <div className="absolute top-20 -right-32 w-[28rem] h-[28rem] bg-teal-200/25 rounded-full blur-3xl animate-float" />
+      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-amber-100/35 rounded-full blur-3xl animate-pulse-glow" />
 
       <div className="relative max-w-7xl mx-auto px-5 sm:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-sm border border-blue-100 rounded-full mb-6 animate-fade-in">
-            <ShieldCheck className="w-4 h-4 text-[#0052CC]" />
-            <span className="text-xs font-semibold text-[#003D99]">Платёжное сопровождение Китай — Россия</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-sm border border-teal-100 rounded-full mb-6 animate-fade-in">
+            <ShieldCheck className="w-4 h-4 text-[#0F766E]" />
+            <span className="text-xs font-semibold text-[#115E59]">Платёжное сопровождение Китай — Россия</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.08] animate-fade-up">
@@ -38,7 +38,7 @@ export function Hero() {
             </button>
             <button
               onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-7 py-4 text-base font-semibold text-gray-700 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl hover:border-[#0052CC] hover:text-[#0052CC] transition-colors"
+              className="px-7 py-4 text-base font-semibold text-gray-700 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl hover:border-[#0F766E] hover:text-[#0F766E] transition-colors"
             >
               Узнать об услугах
             </button>
@@ -47,7 +47,7 @@ export function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackGoal('telegram_reviews_click', { source: 'hero' })}
-              className="px-7 py-4 text-base font-semibold text-white bg-[#0A1A35] rounded-xl flex items-center justify-center gap-2.5 hover:bg-[#003D99] transition-colors"
+              className="px-7 py-4 text-base font-semibold text-white bg-[#14213D] rounded-xl flex items-center justify-center gap-2.5 hover:bg-[#115E59] transition-colors"
             >
               <MessageCircle className="w-5 h-5" />
               Наши отзывы
@@ -59,7 +59,7 @@ export function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackGoal('telegram_clients_click', { source: 'hero' })}
-            className="mx-auto mt-4 inline-flex w-full max-w-md items-center justify-center gap-2.5 rounded-xl border border-[#229ED9]/25 bg-[#229ED9]/10 px-6 py-3.5 text-sm font-semibold text-[#087EAC] transition-colors hover:border-[#229ED9]/50 hover:bg-[#229ED9]/15 sm:w-auto sm:text-base"
+            className="mx-auto mt-4 inline-flex w-full max-w-md items-center justify-center gap-2.5 rounded-xl border border-[#14B8A6]/25 bg-[#14B8A6]/10 px-6 py-3.5 text-sm font-semibold text-[#0F766E] transition-colors hover:border-[#14B8A6]/50 hover:bg-[#14B8A6]/15 sm:w-auto sm:text-base"
           >
             <MessageCircle className="h-5 w-5" />
             Чат клиентов: живые отзывы и чеки выплат
@@ -67,8 +67,8 @@ export function Hero() {
           </a>
 
           <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-sm">
-            <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click', { source: 'hero' })} className="inline-flex items-center gap-2 text-[#0052CC] font-semibold hover:underline"><Send className="w-4 h-4" /> Telegram</a>
-            <a href={PHONE_URL} onClick={() => trackGoal('phone_click', { source: 'hero' })} className="inline-flex items-center gap-2 text-gray-600 font-semibold hover:text-[#0052CC]"><Phone className="w-4 h-4" /> {PHONE_DISPLAY}</a>
+            <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click', { source: 'hero' })} className="inline-flex items-center gap-2 text-[#0F766E] font-semibold hover:underline"><Send className="w-4 h-4" /> Telegram</a>
+            <a href={PHONE_URL} onClick={() => trackGoal('phone_click', { source: 'hero' })} className="inline-flex items-center gap-2 text-gray-600 font-semibold hover:text-[#0F766E]"><Phone className="w-4 h-4" /> {PHONE_DISPLAY}</a>
           </div>
 
           <div className="mt-10 grid grid-cols-3 gap-4 sm:gap-8 max-w-lg mx-auto animate-fade-up delay-400">
@@ -87,7 +87,7 @@ export function Hero() {
 function Stat({ icon: Icon, value, label }: { icon: LucideIcon; value: string; label: string }) {
   return (
     <div className="text-center">
-      <Icon className="w-5 h-5 text-[#0052CC] mx-auto mb-1.5" strokeWidth={2} />
+      <Icon className="w-5 h-5 text-[#0F766E] mx-auto mb-1.5" strokeWidth={2} />
       <p className="text-2xl sm:text-3xl font-bold text-gray-900">{value}</p>
       <p className="text-xs sm:text-sm text-gray-400 mt-0.5">{label}</p>
     </div>

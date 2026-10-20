@@ -1,18 +1,16 @@
-import { Globe, Phone, Send } from 'lucide-react';
+import { Phone, Send } from 'lucide-react';
 import { trackGoal } from '@/lib/analytics';
 import { PHONE_DISPLAY, PHONE_URL, TELEGRAM_URL } from '@/lib/contacts';
 
 export function Footer() {
   return (
-    <footer className="bg-[#0A1A35] py-12">
+    <footer className="bg-[#14213D] py-12">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl btn-gradient flex items-center justify-center text-white">
-              <Globe className="w-5 h-5" strokeWidth={2.2} />
-            </div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#B7F34A] text-sm font-black tracking-tighter text-[#14213D]">ox</div>
             <div>
-              <p className="text-base font-bold text-white">Pro<span className="text-blue-400">Rest</span></p>
+              <p className="text-base font-bold text-white">obmenex<span className="text-[#B7F34A]">.pro</span></p>
               <p className="text-xs text-gray-400">ООО «ПРОРЕСТ»</p>
             </div>
           </div>
@@ -24,7 +22,7 @@ export function Footer() {
             <button onClick={() => document.querySelector('#faq')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm text-gray-400 hover:text-white transition-colors">FAQ</button>
             <button onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm text-gray-400 hover:text-white transition-colors">Контакты</button>
             <a href={PHONE_URL} onClick={() => trackGoal('phone_click', { source: 'footer' })} className="inline-flex items-center gap-1.5 text-sm text-gray-300 hover:text-white"><Phone className="w-4 h-4" /> {PHONE_DISPLAY}</a>
-            <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click', { source: 'footer' })} className="inline-flex items-center gap-1.5 text-sm text-blue-300 hover:text-white"><Send className="w-4 h-4" /> Telegram</a>
+            <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click', { source: 'footer' })} className="inline-flex items-center gap-1.5 text-sm text-teal-300 hover:text-white"><Send className="w-4 h-4" /> Telegram</a>
           </div>
         </div>
 

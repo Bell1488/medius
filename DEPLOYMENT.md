@@ -1,4 +1,4 @@
-# Деплой ProRest на Ubuntu VPS
+# Деплой obmenex.pro на Ubuntu VPS
 
 Инструкция рассчитана на Ubuntu 22.04/24.04. Проект запускается одним Node.js-сервером: он раздает production-сборку `dist` и принимает заявки на `/api/leads`.
 
@@ -124,7 +124,7 @@ nano /etc/systemd/system/prorest.service
 
 ```ini
 [Unit]
-Description=ProRest website and lead API
+Description=obmenex.pro website and lead API
 After=network.target
 
 [Service]
@@ -169,7 +169,7 @@ journalctl -u prorest -f
 Ожидаемый лог:
 
 ```text
-ProRest server listening on :8787 via SOCKS5H
+obmenex.pro server listening on :8787 via SOCKS5H
 ```
 
 ## 7. Проверка Node-сервера

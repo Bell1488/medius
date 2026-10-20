@@ -46,7 +46,7 @@ export function Services() {
     <section id="services" className="py-20 sm:py-28 bg-white scroll-mt-20">
       <div ref={ref} className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="reveal text-center max-w-2xl mx-auto mb-14">
-          <p className="text-sm font-semibold text-[#0052CC] uppercase tracking-wider mb-3">Услуги</p>
+          <p className="text-sm font-semibold text-[#0F766E] uppercase tracking-wider mb-3">Услуги</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
             Разные задачи. Один понятный сервис.
           </h2>
@@ -62,11 +62,11 @@ export function Services() {
               className="reveal card-shadow bg-white border border-gray-100 rounded-2xl p-7 sm:p-8 group"
             >
               <div className="flex items-start justify-between mb-5">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 flex items-center justify-center text-[#0052CC] group-hover:from-[#0052CC] group-hover:to-[#003D99] group-hover:text-white transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-50 to-teal-100/50 flex items-center justify-center text-[#0F766E] group-hover:from-[#0F766E] group-hover:to-[#115E59] group-hover:text-white transition-all duration-300">
                   <service.icon className="w-6 h-6" strokeWidth={1.8} />
                 </div>
                 {service.badge && (
-                  <span className="px-3 py-1 bg-blue-50 text-[#0052CC] text-sm font-semibold rounded-full">
+                  <span className="px-3 py-1 bg-teal-50 text-[#0F766E] text-sm font-semibold rounded-full">
                     {service.badge}
                   </span>
                 )}
@@ -93,7 +93,7 @@ export function Services() {
         <div className="reveal text-center mt-10">
           <button
             onClick={() => document.querySelector('#calculator')?.scrollIntoView({ behavior: 'smooth' })}
-            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-[#0052CC] bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors group"
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-[#0F766E] bg-teal-50 hover:bg-teal-100 rounded-xl transition-colors group"
           >
             Рассчитать платёж
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

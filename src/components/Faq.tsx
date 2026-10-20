@@ -16,10 +16,10 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   return (
     <div className="border-b border-gray-100">
       <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between py-5 text-left group">
-        <span className={`text-base font-medium transition-colors pr-4 ${open ? 'text-[#0052CC]' : 'text-gray-900 group-hover:text-[#0052CC]'}`}>
+        <span className={`text-base font-medium transition-colors pr-4 ${open ? 'text-[#0F766E]' : 'text-gray-900 group-hover:text-[#0F766E]'}`}>
           {q}
         </span>
-        <ChevronDown className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${open ? 'rotate-180 text-[#0052CC]' : 'text-gray-400'}`} />
+        <ChevronDown className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${open ? 'rotate-180 text-[#0F766E]' : 'text-gray-400'}`} />
       </button>
       <div className={`overflow-hidden transition-all duration-300 ${open ? 'max-h-48' : 'max-h-0'}`}>
         <p className="pb-5 text-gray-500 text-sm leading-relaxed">{a}</p>
@@ -34,7 +34,7 @@ export function Faq() {
     <section id="faq" className="py-20 sm:py-28 bg-white scroll-mt-20">
       <div ref={ref} className="max-w-3xl mx-auto px-5 sm:px-8">
         <div className="reveal text-center mb-12">
-          <p className="text-sm font-semibold text-[#0052CC] uppercase tracking-wider mb-3">FAQ</p>
+          <p className="text-sm font-semibold text-[#0F766E] uppercase tracking-wider mb-3">FAQ</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">Отвечаем по существу.</h2>
         </div>
         <div className="reveal">

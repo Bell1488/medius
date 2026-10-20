@@ -11,10 +11,10 @@ export function Pricing() {
   const ref = useReveal<HTMLDivElement>();
 
   return (
-    <section className="py-20 sm:py-28 bg-gradient-to-b from-white to-blue-50/30">
+    <section className="py-20 sm:py-28 bg-gradient-to-b from-white to-teal-50/30">
       <div ref={ref} className="max-w-5xl mx-auto px-5 sm:px-8">
         <div className="reveal text-center max-w-2xl mx-auto mb-14">
-          <p className="text-sm font-semibold text-[#0052CC] uppercase tracking-wider mb-3">Комиссии</p>
+          <p className="text-sm font-semibold text-[#0F766E] uppercase tracking-wider mb-3">Комиссии</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
             Всё существенное. Перед вашим решением.
           </h2>
@@ -26,7 +26,7 @@ export function Pricing() {
         <div className="grid md:grid-cols-3 gap-5">
           {tiers.map((tier) => (
             <div key={tier.label} className="reveal card-shadow bg-white border border-gray-100 rounded-2xl p-7 text-center">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 flex items-center justify-center text-[#0052CC] mx-auto mb-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-50 to-teal-100/50 flex items-center justify-center text-[#0F766E] mx-auto mb-4">
                 <Calculator className="w-6 h-6" strokeWidth={1.8} />
               </div>
               <h3 className="text-base font-semibold text-gray-900">{tier.label}</h3>

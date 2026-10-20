@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #0052CC;
-  --color-primary-dark: #003D99;
-  --color-primary-light: #2680EB;
-  --color-accent: #00C2FF;
+  --color-primary: #0F766E;
+  --color-primary-dark: #115E59;
+  --color-primary-light: #14B8A6;
+  --color-accent: #F59E0B;
+  --color-ink: #14213D;
+  --color-paper: #F6F4EE;
 }
 
 * {
@@ -22,7 +24,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #FAFBFD;
+  background: #F6F4EE;
 }
 
 @keyframes fadeUp {
@@ -87,82 +89,82 @@ body {
 
 .hero-bg {
   background:
-    linear-gradient(180deg, rgba(248, 251, 255, 0.2) 0%, rgba(255, 255, 255, 0.52) 100%),
+    linear-gradient(180deg, rgba(246, 244, 238, 0.16) 0%, rgba(246, 244, 238, 0.86) 100%),
     url('/hero-back.png') center top / cover no-repeat;
 }
 
 .grid-pattern {
   background-image:
-    linear-gradient(rgba(0, 82, 204, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 82, 204, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(15, 118, 110, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 118, 110, 0.06) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #0052CC 0%, #00C2FF 100%);
+  background: linear-gradient(135deg, #0F766E 0%, #14B8A6 58%, #F59E0B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .card-shadow {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 20px rgba(0, 82, 204, 0.05);
+  box-shadow: 0 1px 3px rgba(20, 33, 61, 0.05), 0 8px 24px rgba(20, 33, 61, 0.07);
   transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
 .card-shadow:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04), 0 16px 48px rgba(0, 82, 204, 0.1);
+  box-shadow: 0 8px 18px rgba(20, 33, 61, 0.08), 0 18px 46px rgba(15, 118, 110, 0.14);
   transform: translateY(-4px);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 8px 40px rgba(0, 82, 204, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 8px 40px rgba(20, 33, 61, 0.09), 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .calc-card {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 20px 60px rgba(0, 82, 204, 0.1), 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 20px 60px rgba(20, 33, 61, 0.13), 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+  background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
   transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #003D99 0%, #002A6B 100%);
-  box-shadow: 0 8px 28px rgba(0, 82, 204, 0.35);
+  background: linear-gradient(135deg, #115E59 0%, #134E4A 100%);
+  box-shadow: 0 8px 28px rgba(15, 118, 110, 0.28);
   transform: translateY(-1px);
 }
 
 .btn-gradient {
-  background: linear-gradient(135deg, #0052CC 0%, #00C2FF 100%);
+  background: linear-gradient(135deg, #0F766E 0%, #14B8A6 100%);
   transition: all 0.3s ease;
 }
 
 .btn-gradient:hover {
-  background: linear-gradient(135deg, #003D99 0%, #0099DD 100%);
-  box-shadow: 0 8px 28px rgba(0, 82, 204, 0.35);
+  background: linear-gradient(135deg, #115E59 0%, #0F766E 100%);
+  box-shadow: 0 8px 28px rgba(15, 118, 110, 0.28);
   transform: translateY(-1px);
 }
 
 .input-field {
-  background: #F5F7FA;
-  border: 1.5px solid #E2E8F0;
+  background: #FBFAF6;
+  border: 1.5px solid #D8D8CE;
   transition: all 0.2s ease;
 }
 
 .input-field:focus {
   background: #FFFFFF;
-  border-color: #0052CC;
-  box-shadow: 0 0 0 4px rgba(0, 82, 204, 0.08);
+  border-color: #0F766E;
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.1);
   outline: none;
 }
 
@@ -171,9 +173,9 @@ body {
 }
 
 .currency-pill.active {
-  background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+  background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 82, 204, 0.25);
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
 }
 
 .scrollbar-hide::-webkit-scrollbar { display: none; }
