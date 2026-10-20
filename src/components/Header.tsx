@@ -36,8 +36,8 @@ export function Header() {
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2.5 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#14213D] text-sm font-black tracking-tighter text-[#B7F34A]">ox</div>
-          <span className="text-lg font-bold tracking-tight text-[#14213D]">obmenex<span className="text-[#0F766E]">.pro</span></span>
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#14213D] text-sm font-black tracking-tighter text-[#B7F34A]">gc</div>
+          <span className="text-lg font-bold tracking-tight text-[#14213D]">gelios<span className="text-[#0F766E]">.cc</span></span>
         </button>
 
         <nav className="hidden md:flex items-center gap-1">

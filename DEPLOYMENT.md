@@ -1,8 +1,8 @@
-# Деплой obmenex.pro на Ubuntu VPS
+# Деплой gelios.cc на Ubuntu VPS
 
 Инструкция рассчитана на Ubuntu 22.04/24.04. Проект запускается одним Node.js-сервером: он раздает production-сборку `dist` и принимает заявки на `/api/leads`.
 
-Домен проекта: `obmenex.pro`. Перед началом направьте DNS-записи домена на IP вашего VPS.
+Домен проекта: `gelios.cc`. Перед началом направьте DNS-записи домена на IP вашего VPS.
 
 ## 0. DNS до настройки HTTPS
 
@@ -13,11 +13,11 @@ A      @      SERVER_IP
 A      www    SERVER_IP
 ```
 
-Вместо `SERVER_IP` укажите публичный IPv4-адрес сервера. Если провайдер не разрешает вторую A-запись, используйте `CNAME www -> obmenex.pro.`. Дождитесь обновления DNS и проверьте его с компьютера:
+Вместо `SERVER_IP` укажите публичный IPv4-адрес сервера. Если провайдер не разрешает вторую A-запись, используйте `CNAME www -> gelios.cc.`. Дождитесь обновления DNS и проверьте его с компьютера:
 
 ```bash
-dig +short obmenex.pro
-dig +short www.obmenex.pro
+dig +short gelios.cc
+dig +short www.gelios.cc
 ```
 
 Обе команды должны вернуть IP VPS. Только после этого запускайте Certbot в разделе 9.
@@ -47,22 +47,22 @@ curl -I https://deb.nodesource.com
 
 ```bash
 useradd --system \
-  --home /var/www/obmenex \
+  --home /var/www/gelios \
   --shell /usr/sbin/nologin \
-  obmenex
+  gelios
 
-mkdir -p /var/www/obmenex
-chown -R obmenex:obmenex /var/www/obmenex
+mkdir -p /var/www/gelios
+chown -R gelios:gelios /var/www/gelios
 ```
 
 ## 3. Загрузка проекта
 
 ```bash
-git clone https://github.com/Bell1488/obmenex.git /var/www/obmenex
-chown -R obmenex:obmenex /var/www/obmenex
+git clone https://github.com/Bell1488/obmenex.git /var/www/gelios
+chown -R gelios:gelios /var/www/gelios
 
-cd /var/www/obmenex
-runuser -u obmenex -- npm ci
+cd /var/www/gelios
+runuser -u gelios -- npm ci
 ```
 
 ## 4. Telegram и SOCKS5H
@@ -78,7 +78,7 @@ https://api.telegram.org/botВАШ_ТОКЕН/getUpdates
 Создайте файл окружения:
 
 ```bash
-nano /etc/obmenex.env
+nano /etc/gelios.env
 ```
 
 Содержимое:
@@ -102,7 +102,7 @@ SOCKS5H_PROXY=socks5h://proxy.example.com:1080
 Сохраните файл и защитите его:
 
 ```bash
-chmod 600 /etc/obmenex.env
+chmod 600 /etc/gelios.env
 ```
 
 Если в пароле прокси есть `@`, `:`, `/`, `?` или `#`, символы нужно URL-кодировать.
@@ -116,9 +116,9 @@ chmod 600 /etc/obmenex.env
 `VITE_YANDEX_METRIKA_ID` встраивается в frontend во время сборки:
 
 ```bash
-cd /var/www/obmenex
+cd /var/www/gelios
 
-runuser -u obmenex -- env \
+runuser -u gelios -- env \
   VITE_YANDEX_METRIKA_ID=12345678 \
   npm run build
 ```
@@ -126,7 +126,7 @@ runuser -u obmenex -- env \
 Проверьте результат:
 
 ```bash
-ls -la /var/www/obmenex/dist
+ls -la /var/www/gelios/dist
 ```
 
 ## 6. Systemd-сервис
@@ -134,23 +134,23 @@ ls -la /var/www/obmenex/dist
 Создайте файл:
 
 ```bash
-nano /etc/systemd/system/obmenex.service
+nano /etc/systemd/system/gelios.service
 ```
 
 Вставьте:
 
 ```ini
 [Unit]
-Description=obmenex.pro website and lead API
+Description=gelios.cc website and lead API
 After=network.target
 
 [Service]
 Type=simple
-User=obmenex
-Group=obmenex
-WorkingDirectory=/var/www/obmenex
-EnvironmentFile=/etc/obmenex.env
-ExecStart=/usr/bin/node /var/www/obmenex/server.mjs
+User=gelios
+Group=gelios
+WorkingDirectory=/var/www/gelios
+EnvironmentFile=/etc/gelios.env
+ExecStart=/usr/bin/node /var/www/gelios/server.mjs
 Restart=always
 RestartSec=5
 NoNewPrivileges=true
@@ -172,21 +172,21 @@ which node
 
 ```bash
 systemctl daemon-reload
-systemctl enable obmenex
-systemctl start obmenex
-systemctl status obmenex
+systemctl enable gelios
+systemctl start gelios
+systemctl status gelios
 ```
 
 Логи:
 
 ```bash
-journalctl -u obmenex -f
+journalctl -u gelios -f
 ```
 
 Ожидаемый лог:
 
 ```text
-obmenex.pro server listening on :8787 via SOCKS5H
+gelios.cc server listening on :8787 via SOCKS5H
 ```
 
 ## 7. Проверка Node-сервера
@@ -210,7 +210,7 @@ curl -i -X POST http://127.0.0.1:8787/api/leads \
 Создайте конфигурацию:
 
 ```bash
-nano /etc/nginx/sites-available/obmenex
+nano /etc/nginx/sites-available/gelios
 ```
 
 Содержимое:
@@ -220,7 +220,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name obmenex.pro www.obmenex.pro;
+    server_name gelios.cc www.gelios.cc;
 
     location / {
         proxy_pass http://127.0.0.1:8787;
@@ -240,7 +240,7 @@ server {
 Активируйте сайт:
 
 ```bash
-ln -s /etc/nginx/sites-available/obmenex /etc/nginx/sites-enabled/obmenex
+ln -s /etc/nginx/sites-available/gelios /etc/nginx/sites-enabled/gelios
 nginx -t
 systemctl reload nginx
 ```
@@ -259,8 +259,8 @@ systemctl reload nginx
 apt install -y certbot python3-certbot-nginx
 
 certbot --nginx \
-  -d obmenex.pro \
-  -d www.obmenex.pro
+  -d gelios.cc \
+  -d www.gelios.cc
 ```
 
 Проверка продления сертификата:
@@ -283,14 +283,14 @@ ufw status
 ## 11. Проверка сайта
 
 ```bash
-curl -I https://obmenex.pro
+curl -I https://gelios.cc
 ```
 
 Проверьте в браузере:
 
 ```text
-https://obmenex.pro
-https://obmenex.pro/privacy.html
+https://gelios.cc
+https://gelios.cc/privacy.html
 ```
 
 Затем отправьте тестовую заявку и проверьте Telegram-группу.
@@ -298,42 +298,42 @@ https://obmenex.pro/privacy.html
 ## 12. Обновление проекта
 
 ```bash
-cd /var/www/obmenex
+cd /var/www/gelios
 
-runuser -u obmenex -- git pull
-runuser -u obmenex -- npm ci
+runuser -u gelios -- git pull
+runuser -u gelios -- npm ci
 
-runuser -u obmenex -- env \
+runuser -u gelios -- env \
   VITE_YANDEX_METRIKA_ID=12345678 \
   npm run build
 
-systemctl restart obmenex
-systemctl status obmenex
+systemctl restart gelios
+systemctl status gelios
 ```
 
 После изменения только backend достаточно выполнить:
 
 ```bash
-systemctl restart obmenex
+systemctl restart gelios
 ```
 
 ## 13. Диагностика
 
 ```bash
-systemctl status obmenex
-journalctl -u obmenex -n 100 --no-pager
+systemctl status gelios
+journalctl -u gelios -n 100 --no-pager
 nginx -t
 systemctl status nginx
 ss -tulpn | grep -E '80|443|8787'
-test -f /var/www/obmenex/dist/index.html && echo OK
+test -f /var/www/gelios/dist/index.html && echo OK
 ```
 
 Основные файлы:
 
 ```text
-/var/www/obmenex/server.mjs
-/var/www/obmenex/dist
-/etc/obmenex.env
-/etc/systemd/system/obmenex.service
-/etc/nginx/sites-available/obmenex
+/var/www/gelios/server.mjs
+/var/www/gelios/dist
+/etc/gelios.env
+/etc/systemd/system/gelios.service
+/etc/nginx/sites-available/gelios
 ```

@@ -8,10 +8,10 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#B7F34A] text-sm font-black tracking-tighter text-[#14213D]">ox</div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#B7F34A] text-sm font-black tracking-tighter text-[#14213D]">gc</div>
             <div>
-              <p className="text-base font-bold text-white">obmenex<span className="text-[#B7F34A]">.pro</span></p>
-              <p className="text-xs text-gray-400">ООО «ПРОРЕСТ»</p>
+              <p className="text-base font-bold text-white">gelios<span className="text-[#B7F34A]">.cc</span></p>
+              <p className="text-xs text-gray-400">ООО «Гелиос»</p>
             </div>
           </div>
 
@@ -28,7 +28,7 @@ export function Footer() {
 
         <div className="mt-8 pt-8 border-t border-white/10 text-center">
           <p className="text-xs text-gray-500">
-            Платёжное сопровождение и организация поставок между Китаем и Россией. © {new Date().getFullYear()} ООО «ПРОРЕСТ»
+            Платёжное сопровождение и организация поставок между Китаем и Россией. © {new Date().getFullYear()} ООО «Гелиос»
           </p>
           <p className="text-xs text-gray-600 mt-2">
             Информация на сайте не является публичной офертой.
