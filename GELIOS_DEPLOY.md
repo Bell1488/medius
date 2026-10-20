@@ -1,6 +1,6 @@
 # Деплой gelios.cc
 
-Инструкция для Ubuntu 22.04/24.04. Команды выполняются на VPS от `root` или через `sudo`.
+Инструкция для Ubuntu 22.04/24.04. Все команды выполняются на VPS из root-сессии. Войдите как `root` или выполните `su -` перед началом.
 
 ## 1. DNS
 
@@ -27,18 +27,16 @@ curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 apt install -y nodejs
 ```
 
-## 3. Пользователь и проект
+## 3. Проект
 
 ```bash
-useradd --system --home /var/www/gelios --shell /usr/sbin/nologin gelios
 mkdir -p /var/www/gelios
 git clone https://github.com/Bell1488/obmenex.git /var/www/gelios
-chown -R gelios:gelios /var/www/gelios
 cd /var/www/gelios
-runuser -u gelios -- npm ci
+npm ci
 ```
 
-Если пользователь или каталог уже существуют, этот раздел повторно выполнять не нужно.
+Если каталог уже существует, используйте `cd /var/www/gelios` и не выполняйте `git clone` повторно.
 
 ## 4. Переменные окружения
 
@@ -66,7 +64,7 @@ chmod 600 /etc/gelios.env
 
 ```bash
 cd /var/www/gelios
-runuser -u gelios -- env VITE_YANDEX_METRIKA_ID=12345678 npm run build
+VITE_YANDEX_METRIKA_ID=12345678 npm run build
 ```
 
 Создайте `/etc/systemd/system/gelios.service`:
@@ -78,8 +76,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=gelios
-Group=gelios
+User=root
+Group=root
 WorkingDirectory=/var/www/gelios
 EnvironmentFile=/etc/gelios.env
 ExecStart=/usr/bin/node /var/www/gelios/server.mjs
@@ -156,9 +154,9 @@ curl -I https://gelios.cc
 
 ```bash
 cd /var/www/gelios
-runuser -u gelios -- git pull
-runuser -u gelios -- npm ci
-runuser -u gelios -- env VITE_YANDEX_METRIKA_ID=12345678 npm run build
+git pull
+npm ci
+VITE_YANDEX_METRIKA_ID=12345678 npm run build
 systemctl restart gelios
 ```
 

@@ -1,6 +1,6 @@
 # Деплой gelios.cc на Ubuntu VPS
 
-Инструкция рассчитана на Ubuntu 22.04/24.04. Проект запускается одним Node.js-сервером: он раздает production-сборку `dist` и принимает заявки на `/api/leads`.
+Инструкция рассчитана на Ubuntu 22.04/24.04. Все команды выполняются из root-сессии. Проект запускается одним Node.js-сервером: он раздает production-сборку `dist` и принимает заявки на `/api/leads`.
 
 Домен проекта: `gelios.cc`. Перед началом направьте DNS-записи домена на IP вашего VPS.
 
@@ -43,26 +43,18 @@ npm -v
 curl -I https://deb.nodesource.com
 ```
 
-## 2. Пользователь приложения
+## 2. Каталог приложения
 
 ```bash
-useradd --system \
-  --home /var/www/gelios \
-  --shell /usr/sbin/nologin \
-  gelios
-
 mkdir -p /var/www/gelios
-chown -R gelios:gelios /var/www/gelios
 ```
 
 ## 3. Загрузка проекта
 
 ```bash
 git clone https://github.com/Bell1488/obmenex.git /var/www/gelios
-chown -R gelios:gelios /var/www/gelios
-
 cd /var/www/gelios
-runuser -u gelios -- npm ci
+npm ci
 ```
 
 ## 4. Telegram и SOCKS5H
@@ -118,9 +110,7 @@ chmod 600 /etc/gelios.env
 ```bash
 cd /var/www/gelios
 
-runuser -u gelios -- env \
-  VITE_YANDEX_METRIKA_ID=12345678 \
-  npm run build
+VITE_YANDEX_METRIKA_ID=12345678 npm run build
 ```
 
 Проверьте результат:
@@ -146,8 +136,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=gelios
-Group=gelios
+User=root
+Group=root
 WorkingDirectory=/var/www/gelios
 EnvironmentFile=/etc/gelios.env
 ExecStart=/usr/bin/node /var/www/gelios/server.mjs
@@ -300,12 +290,9 @@ https://gelios.cc/privacy.html
 ```bash
 cd /var/www/gelios
 
-runuser -u gelios -- git pull
-runuser -u gelios -- npm ci
-
-runuser -u gelios -- env \
-  VITE_YANDEX_METRIKA_ID=12345678 \
-  npm run build
+git pull
+npm ci
+VITE_YANDEX_METRIKA_ID=12345678 npm run build
 
 systemctl restart gelios
 systemctl status gelios
