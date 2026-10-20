@@ -28,7 +28,7 @@ function requestText(url, agent) {
     const request = https.get(url, {
       agent,
       timeout: 15000,
-      headers: { 'User-Agent': 'ProRest/1.0' },
+      headers: { 'User-Agent': 'obmenex.pro/1.0' },
     }, (response) => {
       let data = '';
       response.setEncoding('utf8');
@@ -143,7 +143,7 @@ function validateLead(body) {
 
 function formatMessage(body, lead, ip) {
   const lines = [
-    'Новая заявка с сайта ProRest',
+    'Новая заявка с сайта obmenex.pro',
     '',
     `Имя: ${lead.name || 'не указано'}`,
     `Телефон или Telegram: ${lead.contact}`,
@@ -275,5 +275,5 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(port, () => {
   if (!botToken || !chatId) console.warn('TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are not configured');
-  console.log(`ProRest server listening on :${port}${proxyUrl ? ' via SOCKS5H' : ''}`);
+  console.log(`obmenex.pro server listening on :${port}${proxyUrl ? ' via SOCKS5H' : ''}`);
 });

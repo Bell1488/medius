@@ -2,7 +2,25 @@
 
 Инструкция рассчитана на Ubuntu 22.04/24.04. Проект запускается одним Node.js-сервером: он раздает production-сборку `dist` и принимает заявки на `/api/leads`.
 
-Замените `example.ru` на реальный домен.
+Домен проекта: `obmenex.pro`. Перед началом направьте DNS-записи домена на IP вашего VPS.
+
+## 0. DNS до настройки HTTPS
+
+В панели регистратора создайте записи:
+
+```text
+A      @      SERVER_IP
+A      www    SERVER_IP
+```
+
+Вместо `SERVER_IP` укажите публичный IPv4-адрес сервера. Если провайдер не разрешает вторую A-запись, используйте `CNAME www -> obmenex.pro.`. Дождитесь обновления DNS и проверьте его с компьютера:
+
+```bash
+dig +short obmenex.pro
+dig +short www.obmenex.pro
+```
+
+Обе команды должны вернуть IP VPS. Только после этого запускайте Certbot в разделе 9.
 
 ## 1. Установка Node.js и Nginx
 
@@ -29,22 +47,22 @@ curl -I https://deb.nodesource.com
 
 ```bash
 useradd --system \
-  --home /var/www/prorest \
+  --home /var/www/obmenex \
   --shell /usr/sbin/nologin \
-  prorest
+  obmenex
 
-mkdir -p /var/www/prorest
-chown -R prorest:prorest /var/www/prorest
+mkdir -p /var/www/obmenex
+chown -R obmenex:obmenex /var/www/obmenex
 ```
 
 ## 3. Загрузка проекта
 
 ```bash
-git clone https://github.com/Bell1488/prorest.git /var/www/prorest
-chown -R prorest:prorest /var/www/prorest
+git clone https://github.com/Bell1488/obmenex.git /var/www/obmenex
+chown -R obmenex:obmenex /var/www/obmenex
 
-cd /var/www/prorest
-runuser -u prorest -- npm ci
+cd /var/www/obmenex
+runuser -u obmenex -- npm ci
 ```
 
 ## 4. Telegram и SOCKS5H
@@ -60,7 +78,7 @@ https://api.telegram.org/botВАШ_ТОКЕН/getUpdates
 Создайте файл окружения:
 
 ```bash
-nano /etc/prorest.env
+nano /etc/obmenex.env
 ```
 
 Содержимое:
@@ -71,7 +89,6 @@ TELEGRAM_CHAT_ID=-1001234567890
 SOCKS5H_PROXY=socks5h://user:password@proxy.example.com:1080
 PORT=8787
 VITE_YANDEX_METRIKA_ID=12345678
-RATE_MARKUP_PERCENT=3
 BANK_ADVANTAGE_PERCENT=2
 RATE_UPDATE_INTERVAL_MS=3600000
 ```
@@ -85,7 +102,7 @@ SOCKS5H_PROXY=socks5h://proxy.example.com:1080
 Сохраните файл и защитите его:
 
 ```bash
-chmod 600 /etc/prorest.env
+chmod 600 /etc/obmenex.env
 ```
 
 Если в пароле прокси есть `@`, `:`, `/`, `?` или `#`, символы нужно URL-кодировать.
@@ -99,9 +116,9 @@ chmod 600 /etc/prorest.env
 `VITE_YANDEX_METRIKA_ID` встраивается в frontend во время сборки:
 
 ```bash
-cd /var/www/prorest
+cd /var/www/obmenex
 
-runuser -u prorest -- env \
+runuser -u obmenex -- env \
   VITE_YANDEX_METRIKA_ID=12345678 \
   npm run build
 ```
@@ -109,7 +126,7 @@ runuser -u prorest -- env \
 Проверьте результат:
 
 ```bash
-ls -la /var/www/prorest/dist
+ls -la /var/www/obmenex/dist
 ```
 
 ## 6. Systemd-сервис
@@ -117,7 +134,7 @@ ls -la /var/www/prorest/dist
 Создайте файл:
 
 ```bash
-nano /etc/systemd/system/prorest.service
+nano /etc/systemd/system/obmenex.service
 ```
 
 Вставьте:
@@ -129,11 +146,11 @@ After=network.target
 
 [Service]
 Type=simple
-User=prorest
-Group=prorest
-WorkingDirectory=/var/www/prorest
-EnvironmentFile=/etc/prorest.env
-ExecStart=/usr/bin/node /var/www/prorest/server.mjs
+User=obmenex
+Group=obmenex
+WorkingDirectory=/var/www/obmenex
+EnvironmentFile=/etc/obmenex.env
+ExecStart=/usr/bin/node /var/www/obmenex/server.mjs
 Restart=always
 RestartSec=5
 NoNewPrivileges=true
@@ -155,15 +172,15 @@ which node
 
 ```bash
 systemctl daemon-reload
-systemctl enable prorest
-systemctl start prorest
-systemctl status prorest
+systemctl enable obmenex
+systemctl start obmenex
+systemctl status obmenex
 ```
 
 Логи:
 
 ```bash
-journalctl -u prorest -f
+journalctl -u obmenex -f
 ```
 
 Ожидаемый лог:
@@ -193,7 +210,7 @@ curl -i -X POST http://127.0.0.1:8787/api/leads \
 Создайте конфигурацию:
 
 ```bash
-nano /etc/nginx/sites-available/prorest
+nano /etc/nginx/sites-available/obmenex
 ```
 
 Содержимое:
@@ -203,7 +220,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name example.ru www.example.ru;
+    server_name obmenex.pro www.obmenex.pro;
 
     location / {
         proxy_pass http://127.0.0.1:8787;
@@ -223,7 +240,7 @@ server {
 Активируйте сайт:
 
 ```bash
-ln -s /etc/nginx/sites-available/prorest /etc/nginx/sites-enabled/prorest
+ln -s /etc/nginx/sites-available/obmenex /etc/nginx/sites-enabled/obmenex
 nginx -t
 systemctl reload nginx
 ```
@@ -242,8 +259,8 @@ systemctl reload nginx
 apt install -y certbot python3-certbot-nginx
 
 certbot --nginx \
-  -d example.ru \
-  -d www.example.ru
+  -d obmenex.pro \
+  -d www.obmenex.pro
 ```
 
 Проверка продления сертификата:
@@ -266,14 +283,14 @@ ufw status
 ## 11. Проверка сайта
 
 ```bash
-curl -I https://example.ru
+curl -I https://obmenex.pro
 ```
 
 Проверьте в браузере:
 
 ```text
-https://example.ru
-https://example.ru/privacy.html
+https://obmenex.pro
+https://obmenex.pro/privacy.html
 ```
 
 Затем отправьте тестовую заявку и проверьте Telegram-группу.
@@ -281,42 +298,42 @@ https://example.ru/privacy.html
 ## 12. Обновление проекта
 
 ```bash
-cd /var/www/prorest
+cd /var/www/obmenex
 
-runuser -u prorest -- git pull
-runuser -u prorest -- npm ci
+runuser -u obmenex -- git pull
+runuser -u obmenex -- npm ci
 
-runuser -u prorest -- env \
+runuser -u obmenex -- env \
   VITE_YANDEX_METRIKA_ID=12345678 \
   npm run build
 
-systemctl restart prorest
-systemctl status prorest
+systemctl restart obmenex
+systemctl status obmenex
 ```
 
 После изменения только backend достаточно выполнить:
 
 ```bash
-systemctl restart prorest
+systemctl restart obmenex
 ```
 
 ## 13. Диагностика
 
 ```bash
-systemctl status prorest
-journalctl -u prorest -n 100 --no-pager
+systemctl status obmenex
+journalctl -u obmenex -n 100 --no-pager
 nginx -t
 systemctl status nginx
 ss -tulpn | grep -E '80|443|8787'
-test -f /var/www/prorest/dist/index.html && echo OK
+test -f /var/www/obmenex/dist/index.html && echo OK
 ```
 
 Основные файлы:
 
 ```text
-/var/www/prorest/server.mjs
-/var/www/prorest/dist
-/etc/prorest.env
-/etc/systemd/system/prorest.service
-/etc/nginx/sites-available/prorest
+/var/www/obmenex/server.mjs
+/var/www/obmenex/dist
+/etc/obmenex.env
+/etc/systemd/system/obmenex.service
+/etc/nginx/sites-available/obmenex
 ```
