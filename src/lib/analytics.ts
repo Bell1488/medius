@@ -1,9 +1,11 @@
 declare global {
   interface Window {
-    ym?: ((counterId: number, action: string, ...args: unknown[]) => void) & { a?: unknown[] };
+    ym?: ((counterId: number, action: string, ...args: unknown[]) => void) & { a?: unknown[]; l?: number };
+    dataLayer?: unknown[];
   }
 }
 
+const DEFAULT_METRIKA_ID = 113716616;
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid'] as const;
 const ATTRIBUTION_KEY = 'gelios_attribution';
 
@@ -41,29 +43,35 @@ export function readAttribution(): Attribution {
 }
 
 export function trackGoal(goal: string, params?: Record<string, unknown>) {
-  const counterId = Number(import.meta.env.VITE_YANDEX_METRIKA_ID);
+  const counterId = Number(import.meta.env.VITE_YANDEX_METRIKA_ID || DEFAULT_METRIKA_ID);
   if (counterId > 0 && typeof window !== 'undefined' && window.ym) {
     window.ym(counterId, 'reachGoal', goal, params);
   }
 }
 
 export function initMetrika() {
-  const counterId = Number(import.meta.env.VITE_YANDEX_METRIKA_ID);
+  const counterId = Number(import.meta.env.VITE_YANDEX_METRIKA_ID || DEFAULT_METRIKA_ID);
   if (!counterId || typeof window === 'undefined' || window.ym) return;
 
   window.ym = function (...args: unknown[]) {
     (window.ym!.a = window.ym!.a || []).push(args);
   };
+  window.ym.l = Date.now();
   window.ym.a = [];
+  window.dataLayer = window.dataLayer || [];
 
   const script = document.createElement('script');
   script.async = true;
-  script.src = 'https://mc.yandex.ru/metrika/tag.js';
+  script.src = `https://mc.yandex.ru/metrika/tag.js?id=${counterId}`;
   script.onload = () => window.ym?.(counterId, 'init', {
-    clickmap: true,
-    trackLinks: true,
-    accurateTrackBounce: true,
+    ssr: true,
     webvisor: true,
+    clickmap: true,
+    ecommerce: 'dataLayer',
+    referrer: document.referrer,
+    url: window.location.href,
+    accurateTrackBounce: true,
+    trackLinks: true,
   });
   document.head.appendChild(script);
 }

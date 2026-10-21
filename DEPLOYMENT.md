@@ -80,7 +80,7 @@ TELEGRAM_BOT_TOKEN=123456789:ВАШ_ТОКЕН
 TELEGRAM_CHAT_ID=-1001234567890
 SOCKS5H_PROXY=socks5h://user:password@proxy.example.com:1080
 PORT=8787
-VITE_YANDEX_METRIKA_ID=12345678
+VITE_YANDEX_METRIKA_ID=113716616
 BANK_ADVANTAGE_PERCENT=2
 RATE_UPDATE_INTERVAL_MS=3600000
 ```
@@ -110,7 +110,7 @@ chmod 600 /etc/gelios.env
 ```bash
 cd /var/www/gelios
 
-VITE_YANDEX_METRIKA_ID=12345678 npm run build
+VITE_YANDEX_METRIKA_ID=113716616 npm run build
 ```
 
 Проверьте результат:
@@ -292,7 +292,7 @@ cd /var/www/gelios
 
 git pull
 npm ci
-VITE_YANDEX_METRIKA_ID=12345678 npm run build
+VITE_YANDEX_METRIKA_ID=113716616 npm run build
 
 systemctl restart gelios
 systemctl status gelios
