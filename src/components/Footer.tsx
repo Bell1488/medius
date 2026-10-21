@@ -8,9 +8,9 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#B7F34A] text-sm font-black tracking-tighter text-[#14213D]">gc</div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#B7F34A] text-sm font-black tracking-tighter text-[#14213D]">GO</div>
             <div>
-              <p className="text-base font-bold text-white">gelios<span className="text-[#B7F34A]">.cc</span></p>
+              <p className="text-base font-bold text-white">GeliosObmen</p>
               <p className="text-xs text-gray-400">ООО «Гелиос»</p>
             </div>
           </div>
