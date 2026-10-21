@@ -1,4 +1,4 @@
-# Деплой gelios.cc
+# Деплой geliosobmen.ru
 
 Инструкция для Ubuntu 22.04/24.04. Все команды выполняются на VPS из root-сессии. Войдите как `root` или выполните `su -` перед началом.
 
@@ -14,8 +14,8 @@ A      www    IP_СЕРВЕРА
 Проверьте, что домен уже указывает на сервер:
 
 ```bash
-dig +short gelios.cc
-dig +short www.gelios.cc
+dig +short geliosobmen.ru
+dig +short www.geliosobmen.ru
 ```
 
 ## 2. Установка зависимостей
@@ -71,7 +71,7 @@ VITE_YANDEX_METRIKA_ID=12345678 npm run build
 
 ```ini
 [Unit]
-Description=gelios.cc website and lead API
+Description=geliosobmen.ru website and lead API
 After=network.target
 
 [Service]
@@ -107,7 +107,7 @@ curl -I http://127.0.0.1:8787
 server {
     listen 80;
     listen [::]:80;
-    server_name gelios.cc www.gelios.cc;
+    server_name geliosobmen.ru www.geliosobmen.ru;
 
     location / {
         proxy_pass http://127.0.0.1:8787;
@@ -134,7 +134,7 @@ systemctl reload nginx
 ## 7. HTTPS и firewall
 
 ```bash
-certbot --nginx -d gelios.cc -d www.gelios.cc
+certbot --nginx -d geliosobmen.ru -d www.geliosobmen.ru
 certbot renew --dry-run
 
 ufw allow OpenSSH
@@ -147,7 +147,7 @@ ufw --force enable
 Проверка:
 
 ```bash
-curl -I https://gelios.cc
+curl -I https://geliosobmen.ru
 ```
 
 ## 8. Обновление сайта

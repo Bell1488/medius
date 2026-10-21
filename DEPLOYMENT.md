@@ -1,8 +1,8 @@
-# Деплой gelios.cc на Ubuntu VPS
+# Деплой geliosobmen.ru на Ubuntu VPS
 
 Инструкция рассчитана на Ubuntu 22.04/24.04. Все команды выполняются из root-сессии. Проект запускается одним Node.js-сервером: он раздает production-сборку `dist` и принимает заявки на `/api/leads`.
 
-Домен проекта: `gelios.cc`. Перед началом направьте DNS-записи домена на IP вашего VPS.
+Домен проекта: `geliosobmen.ru`. Перед началом направьте DNS-записи домена на IP вашего VPS.
 
 ## 0. DNS до настройки HTTPS
 
@@ -13,11 +13,11 @@ A      @      SERVER_IP
 A      www    SERVER_IP
 ```
 
-Вместо `SERVER_IP` укажите публичный IPv4-адрес сервера. Если провайдер не разрешает вторую A-запись, используйте `CNAME www -> gelios.cc.`. Дождитесь обновления DNS и проверьте его с компьютера:
+Вместо `SERVER_IP` укажите публичный IPv4-адрес сервера. Если провайдер не разрешает вторую A-запись, используйте `CNAME www -> geliosobmen.ru.`. Дождитесь обновления DNS и проверьте его с компьютера:
 
 ```bash
-dig +short gelios.cc
-dig +short www.gelios.cc
+dig +short geliosobmen.ru
+dig +short www.geliosobmen.ru
 ```
 
 Обе команды должны вернуть IP VPS. Только после этого запускайте Certbot в разделе 9.
@@ -131,7 +131,7 @@ nano /etc/systemd/system/gelios.service
 
 ```ini
 [Unit]
-Description=gelios.cc website and lead API
+Description=geliosobmen.ru website and lead API
 After=network.target
 
 [Service]
@@ -176,7 +176,7 @@ journalctl -u gelios -f
 Ожидаемый лог:
 
 ```text
-gelios.cc server listening on :8787 via SOCKS5H
+geliosobmen.ru server listening on :8787 via SOCKS5H
 ```
 
 ## 7. Проверка Node-сервера
@@ -210,7 +210,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name gelios.cc www.gelios.cc;
+    server_name geliosobmen.ru www.geliosobmen.ru;
 
     location / {
         proxy_pass http://127.0.0.1:8787;
@@ -249,8 +249,8 @@ systemctl reload nginx
 apt install -y certbot python3-certbot-nginx
 
 certbot --nginx \
-  -d gelios.cc \
-  -d www.gelios.cc
+  -d geliosobmen.ru \
+  -d www.geliosobmen.ru
 ```
 
 Проверка продления сертификата:
@@ -273,14 +273,14 @@ ufw status
 ## 11. Проверка сайта
 
 ```bash
-curl -I https://gelios.cc
+curl -I https://geliosobmen.ru
 ```
 
 Проверьте в браузере:
 
 ```text
-https://gelios.cc
-https://gelios.cc/privacy.html
+https://geliosobmen.ru
+https://geliosobmen.ru/privacy.html
 ```
 
 Затем отправьте тестовую заявку и проверьте Telegram-группу.
