@@ -1,5 +1,6 @@
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
+import { About } from '@/components/About';
 import { Services } from '@/components/Services';
 import { Conditions } from '@/components/Conditions';
 import { Process } from '@/components/Process';
@@ -17,6 +18,7 @@ function App() {
       <Header />
       <main>
         <Hero />
+        <About />
         <Services />
         <Conditions />
         <Process />

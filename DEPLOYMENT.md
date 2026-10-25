@@ -13,7 +13,7 @@ dig +short www.mediusobmen.cc
 
 ## 2. Установка и клонирование из GitHub
 
-Подключитесь по SSH, перейдите в root-сессию (`sudo -i`) и выполните:
+Подключитесь по SSH под пользователем `root` и выполните все команды ниже от root:
 
 ```bash
 apt update
@@ -24,8 +24,6 @@ mkdir -p /var/www
 git clone https://github.com/Bell1488/medius.git /var/www/medius
 cd /var/www/medius
 npm ci
-id -u medius >/dev/null 2>&1 || useradd --system --home-dir /var/www/medius --shell /usr/sbin/nologin medius
-chown -R medius:medius /var/www/medius
 ```
 
 Для приватного GitHub-репозитория настройте deploy key. Не помещайте токен GitHub в URL или файлы проекта.
@@ -52,7 +50,6 @@ ID Метрики передаётся на этапе сборки frontend:
 ```bash
 cd /var/www/medius
 VITE_YANDEX_METRIKA_ID=113716616 npm run build
-chown -R medius:medius /var/www/medius
 test -f dist/index.html && echo "Сборка готова"
 ```
 
@@ -68,8 +65,8 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=medius
-Group=medius
+User=root
+Group=root
 WorkingDirectory=/var/www/medius
 EnvironmentFile=/etc/medius.env
 ExecStart=/usr/bin/node /var/www/medius/server.mjs
@@ -146,7 +143,6 @@ cd /var/www/medius
 git pull --ff-only origin main
 npm ci
 VITE_YANDEX_METRIKA_ID=113716616 npm run build
-chown -R medius:medius /var/www/medius
 systemctl restart medius
 systemctl status medius --no-pager
 ```

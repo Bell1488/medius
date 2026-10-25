@@ -4,6 +4,7 @@ import { trackGoal } from '@/lib/analytics';
 import { PHONE_DISPLAY, PHONE_URL, TELEGRAM_URL } from '@/lib/contacts';
 
 const navLinks = [
+  { href: '#about', label: 'О нас' },
   { href: '#calculator', label: 'Калькулятор' },
   { href: '#services', label: 'Услуги' },
   { href: '#process', label: 'Как это работает' },
