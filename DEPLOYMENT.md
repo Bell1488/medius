@@ -88,6 +88,28 @@ systemctl status medius --no-pager
 journalctl -u medius -n 100 --no-pager
 ```
 
+Если статус показывает `EADDRINUSE ... :::8787`, порт уже занят ранее запущенным Node-процессом. Остановите перезапуски сервиса, найдите владельца порта и проверьте команду процесса:
+
+```bash
+systemctl stop medius
+ss -ltnp | grep ':8787'
+fuser -v 8787/tcp
+ps -fp PID_ИЗ_ВЫВОДА
+```
+
+Если это старый экземпляр этого проекта, завершите его и запустите systemd заново:
+
+```bash
+kill PID_ИЗ_ВЫВОДА
+sleep 2
+ss -ltnp | grep ':8787' || true
+systemctl reset-failed medius
+systemctl start medius
+systemctl status medius --no-pager
+```
+
+Если порт занят другим приложением, оставьте его работающим и выберите свободный порт: измените `PORT` в `/etc/medius.env` и `proxy_pass` в конфигурации Nginx на тот же номер, затем выполните `systemctl daemon-reload && systemctl restart medius && nginx -t && systemctl reload nginx`.
+
 ## 6. Nginx
 
 Создайте `/etc/nginx/sites-available/medius`:
