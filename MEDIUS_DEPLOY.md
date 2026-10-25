@@ -14,7 +14,7 @@ https://github.com/Bell1488/medius.git
 git clone https://github.com/Bell1488/medius.git /var/www/medius
 cd /var/www/medius
 npm ci
-VITE_YANDEX_METRIKA_ID=113716616 npm run build
+VITE_YANDEX_METRIKA_ID=113791515 npm run build
 systemctl restart medius
 ```
 

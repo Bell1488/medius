@@ -49,7 +49,7 @@ ID Метрики передаётся на этапе сборки frontend:
 
 ```bash
 cd /var/www/medius
-VITE_YANDEX_METRIKA_ID=113716616 npm run build
+VITE_YANDEX_METRIKA_ID=113791515 npm run build
 test -f dist/index.html && echo "Сборка готова"
 ```
 
@@ -170,7 +170,21 @@ ufw --force enable
 
 ## 8. Проверка и обновление
 
-Проверьте `curl -sS http://127.0.0.1:8787/api/rates`. Отправьте одну реальную тестовую заявку, убедитесь, что она пришла в Telegram, и проверьте Метрику: счётчик и цели `lead_submit`, `telegram_click`, `phone_click`. Рекламу включайте только после этого.
+Проверьте `curl -sS http://127.0.0.1:8787/api/rates`. Отправьте одну реальную тестовую заявку, убедитесь, что она пришла в Telegram, и проверьте Метрику. Рекламу включайте только после этого.
+
+## Цели Яндекс Метрики
+
+В счётчике `113791515` создайте JavaScript-цели с такими идентификаторами:
+
+```text
+lead_submit             отправка формы заявки
+telegram_click          переход в Telegram менеджера или фиксация курса
+phone_click             клик по номеру телефона
+telegram_reviews_click  переход на канал с отзывами
+telegram_clients_click  переход в чат клиентов
+```
+
+Параметр `source` передаётся автоматически для разбивки по месту клика (`hero`, `header_desktop`, `header_mobile`, `calculator`, `contact`, `footer`, `floating_button`). Для основной рекламной цели используй `lead_submit`; `telegram_click` можно добавить как дополнительную цель конверсии.
 
 Для обновления из GitHub:
 
@@ -181,7 +195,7 @@ git remote -v
 git fetch origin
 git pull --ff-only origin main
 npm ci
-VITE_YANDEX_METRIKA_ID=113716616 npm run build
+VITE_YANDEX_METRIKA_ID=113791515 npm run build
 systemctl restart medius
 systemctl status medius --no-pager
 ```

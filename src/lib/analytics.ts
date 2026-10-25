@@ -5,7 +5,7 @@ declare global {
   }
 }
 
-const DEFAULT_METRIKA_ID = 113716616;
+const DEFAULT_METRIKA_ID = 113791515;
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid'] as const;
 const ATTRIBUTION_KEY = 'medius_attribution';
 
