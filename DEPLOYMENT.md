@@ -108,6 +108,20 @@ systemctl start medius
 systemctl status medius --no-pager
 ```
 
+Если после `kill` процесс снова появляется, старый сайт управляется отдельным systemd-сервисом. Найдите и отключите его:
+
+```bash
+systemctl list-units --type=service --all | grep -iE 'prorest|gelios|obmen'
+systemctl status prorest --no-pager
+systemctl stop prorest
+systemctl disable prorest
+fuser -v 8787/tcp
+systemctl start medius
+systemctl status medius --no-pager
+```
+
+Имя `prorest` замените на имя сервиса из первого вывода, если оно отличается. Отключайте старый сервис только если ProRest больше не должен работать на этом VPS.
+
 Если порт занят другим приложением, оставьте его работающим и выберите свободный порт: измените `PORT` в `/etc/medius.env` и `proxy_pass` в конфигурации Nginx на тот же номер, затем выполните `systemctl daemon-reload && systemctl restart medius && nginx -t && systemctl reload nginx`.
 
 ## 6. Nginx
