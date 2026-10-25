@@ -117,10 +117,10 @@ export function ExchangeCalculator() {
 
   return (
     <div id="calculator" className="relative py-10 sm:py-14 scroll-mt-20">
-      <div className="max-w-3xl mx-auto px-5 sm:px-8">
-        <div className="calc-card rounded-3xl p-6 sm:p-8 animate-scale-in">
+      <div className="mx-auto max-w-none px-0">
+        <div className="calc-card rounded-2xl p-5 sm:rounded-3xl sm:p-7 animate-scale-in">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0F766E]">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-[#2457D6]">
               <TrendingUp className="w-5 h-5" strokeWidth={2} />
             </div>
             <div>
@@ -160,8 +160,8 @@ export function ExchangeCalculator() {
                       onClick={() => setFromAmount(String(amount))}
                       className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
                         Number(fromAmount) === amount
-                          ? 'bg-teal-100 text-[#0F766E]'
-                          : 'bg-gray-50 text-gray-500 hover:bg-teal-50 hover:text-[#0F766E]'
+                          ? 'bg-blue-100 text-[#2457D6]'
+                          : 'bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-[#2457D6]'
                       }`}
                     >
                       {formatNumber(amount)} ₽
@@ -173,7 +173,7 @@ export function ExchangeCalculator() {
 
             <button
               onClick={swapCurrencies}
-              className="mt-8 h-11 w-11 self-start rounded-xl bg-teal-50 text-[#0F766E] transition-all hover:scale-110 hover:bg-teal-100 active:scale-95 sm:mt-8"
+              className="mt-8 h-11 w-11 self-start rounded-xl bg-blue-50 text-[#2457D6] transition-all hover:scale-110 hover:bg-blue-100 active:scale-95 sm:mt-8"
               aria-label="Поменять валюты"
             >
               <ArrowLeftRight className="w-5 h-5" />
@@ -186,7 +186,7 @@ export function ExchangeCalculator() {
                   type="text"
                   readOnly
                   value={formatNumber(calculated.toAmount)}
-                  className="input-field w-full pl-4 pr-16 py-4 rounded-xl text-2xl font-bold text-[#0F766E] bg-teal-50/30"
+                  className="input-field w-full pl-4 pr-16 py-4 rounded-xl text-2xl font-bold text-[#2457D6] bg-blue-50/30"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2">
                   <CurrencySelector value={toCurrency} onChange={setToCurrency} />
@@ -195,8 +195,8 @@ export function ExchangeCalculator() {
             </div>
           </div>
 
-          <div className="mt-5 flex items-start gap-2 rounded-xl border border-teal-100 bg-teal-50/70 px-4 py-3 text-sm text-[#115E59]">
-            <Timer className="mt-0.5 h-4 w-4 shrink-0 text-[#0F766E]" />
+          <div className="mt-5 flex items-start gap-2 rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm text-[#163B9E]">
+            <Timer className="mt-0.5 h-4 w-4 shrink-0 text-[#2457D6]" />
             <p>
               <span className="font-semibold">Курс {formatNumber(displayedRate.value)} ₽ зафиксирован на {lockTime} мин.</span>{' '}
               После истечения расчёт обновится.
@@ -256,7 +256,7 @@ export function ExchangeCalculator() {
           </p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <a href={`${TELEGRAM_URL}?text=${encodeURIComponent(`Здравствуйте! Расчёт: ${formatNumber(parseFloat(fromAmount) || 0)} ${fromCurrency} → ${formatNumber(calculated.toAmount)} ${toCurrency}, курс ${formatNumber(rate)}, комиссия ${calculated.commissionPercent}%`)}`} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click', { source: 'calculator' })} className="flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white btn-gradient"><Send className="h-4 w-4" />Зафиксировать курс в Telegram</a>
-            <button type="button" onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })} className="flex items-center justify-center gap-2 rounded-xl bg-teal-50 px-4 py-3 text-sm font-semibold text-[#0F766E] hover:bg-teal-100"><UserRound className="h-4 w-4" />Оставить заявку</button>
+            <button type="button" onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })} className="flex items-center justify-center gap-2 rounded-xl bg-blue-50 px-4 py-3 text-sm font-semibold text-[#2457D6] hover:bg-blue-100"><UserRound className="h-4 w-4" />Оставить заявку</button>
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-gray-500">
             <span className="inline-flex items-center gap-1.5"><LockKeyhole className="h-3.5 w-3.5 text-emerald-600" /> Данные защищены</span>
@@ -265,7 +265,7 @@ export function ExchangeCalculator() {
           </div>
         </div>
         <div className="mt-4 rounded-2xl border border-gray-200 bg-white/80 p-4 text-sm text-gray-700 shadow-sm">
-          <div className="flex items-center gap-2 font-semibold text-gray-900"><Clock3 className="h-4 w-4 text-[#0F766E]" /> Последние успешные операции</div>
+          <div className="flex items-center gap-2 font-semibold text-gray-900"><Clock3 className="h-4 w-4 text-[#2457D6]" /> Последние успешные операции</div>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {paymentNotices.slice(0, 4).map((notice, index) => (
               <p key={notice} className={`flex items-center gap-2 rounded-lg px-3 py-2 ${index === noticeIndex % 4 ? 'bg-emerald-50 text-emerald-800' : 'bg-gray-50'}`}>
@@ -284,7 +284,7 @@ function CurrencySelector({ value, onChange }: { value: Currency; onChange: (c: 
     <select
       value={value}
       onChange={(e) => onChange(e.target.value as Currency)}
-      className="appearance-none bg-white border-2 border-gray-200 rounded-lg pl-2.5 pr-1 py-2 text-sm font-bold text-gray-700 focus:outline-none focus:border-[#0F766E] cursor-pointer"
+      className="appearance-none bg-white border-2 border-gray-200 rounded-lg pl-2.5 pr-1 py-2 text-sm font-bold text-gray-700 focus:outline-none focus:border-[#2457D6] cursor-pointer"
     >
       {CURRENCIES.map((c) => (
         <option key={c} value={c}>{c}</option>

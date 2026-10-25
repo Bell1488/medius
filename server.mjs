@@ -28,7 +28,7 @@ function requestText(url, agent) {
     const request = https.get(url, {
       agent,
       timeout: 15000,
-      headers: { 'User-Agent': 'geliosobmen.ru/1.0' },
+      headers: { 'User-Agent': 'mediusobmen.cc/1.0' },
     }, (response) => {
       let data = '';
       response.setEncoding('utf8');
@@ -143,7 +143,7 @@ function validateLead(body) {
 
 function formatMessage(body, lead, ip) {
   const lines = [
-    'Новая заявка с сайта geliosobmen.ru',
+    'Новая заявка с сайта MediusObmen.cc',
     '',
     `Имя: ${lead.name || 'не указано'}`,
     `Телефон или Telegram: ${lead.contact}`,
@@ -275,5 +275,5 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(port, () => {
   if (!botToken || !chatId) console.warn('TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are not configured');
-  console.log(`geliosobmen.ru server listening on :${port}${proxyUrl ? ' via SOCKS5H' : ''}`);
+  console.log(`MediusObmen.cc server listening on :${port}${proxyUrl ? ' via SOCKS5H' : ''}`);
 });

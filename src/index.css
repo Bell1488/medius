@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #0F766E;
-  --color-primary-dark: #115E59;
-  --color-primary-light: #14B8A6;
-  --color-accent: #F59E0B;
-  --color-ink: #14213D;
-  --color-paper: #F6F4EE;
+  --color-primary: #2457D6;
+  --color-primary-dark: #163B9E;
+  --color-primary-light: #26B6D4;
+  --color-accent: #F2764B;
+  --color-ink: #101B36;
+  --color-paper: #F4F7FB;
 }
 
 * {
@@ -24,7 +24,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #F6F4EE;
+  background: #F4F7FB;
 }
 
 @keyframes fadeUp {
@@ -89,31 +89,31 @@ body {
 
 .hero-bg {
   background:
-    linear-gradient(180deg, rgba(246, 244, 238, 0.16) 0%, rgba(246, 244, 238, 0.86) 100%),
+    linear-gradient(180deg, rgba(244, 247, 251, 0.72) 0%, rgba(244, 247, 251, 0.96) 86%),
     url('/hero-back.png') center top / cover no-repeat;
 }
 
 .grid-pattern {
   background-image:
-    linear-gradient(rgba(15, 118, 110, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 118, 110, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(36, 87, 214, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36, 87, 214, 0.055) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #0F766E 0%, #14B8A6 58%, #F59E0B 100%);
+  background: linear-gradient(120deg, #2457D6 0%, #26B6D4 62%, #F2764B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .card-shadow {
-  box-shadow: 0 1px 3px rgba(20, 33, 61, 0.05), 0 8px 24px rgba(20, 33, 61, 0.07);
+  box-shadow: 0 1px 3px rgba(16, 27, 54, 0.05), 0 12px 30px rgba(16, 27, 54, 0.065);
   transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
 .card-shadow:hover {
-  box-shadow: 0 8px 18px rgba(20, 33, 61, 0.08), 0 18px 46px rgba(15, 118, 110, 0.14);
+  box-shadow: 0 10px 22px rgba(16, 27, 54, 0.09), 0 18px 46px rgba(36, 87, 214, 0.14);
   transform: translateY(-4px);
 }
 
@@ -122,7 +122,7 @@ body {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 8px 40px rgba(20, 33, 61, 0.09), 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 12px 42px rgba(16, 27, 54, 0.1), 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .calc-card {
@@ -130,28 +130,28 @@ body {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 20px 60px rgba(20, 33, 61, 0.13), 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 22px 64px rgba(16, 27, 54, 0.14), 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
+  background: linear-gradient(135deg, #2457D6 0%, #163B9E 100%);
   transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #115E59 0%, #134E4A 100%);
-  box-shadow: 0 8px 28px rgba(15, 118, 110, 0.28);
+  background: linear-gradient(135deg, #1D4ED8 0%, #102D7A 100%);
+  box-shadow: 0 8px 28px rgba(36, 87, 214, 0.28);
   transform: translateY(-1px);
 }
 
 .btn-gradient {
-  background: linear-gradient(135deg, #0F766E 0%, #14B8A6 100%);
+  background: linear-gradient(135deg, #2457D6 0%, #26B6D4 100%);
   transition: all 0.3s ease;
 }
 
 .btn-gradient:hover {
-  background: linear-gradient(135deg, #115E59 0%, #0F766E 100%);
-  box-shadow: 0 8px 28px rgba(15, 118, 110, 0.28);
+  background: linear-gradient(135deg, #163B9E 0%, #2457D6 100%);
+  box-shadow: 0 8px 28px rgba(36, 87, 214, 0.28);
   transform: translateY(-1px);
 }
 
@@ -163,8 +163,8 @@ body {
 
 .input-field:focus {
   background: #FFFFFF;
-  border-color: #0F766E;
-  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.1);
+  border-color: #2457D6;
+  box-shadow: 0 0 0 4px rgba(36, 87, 214, 0.11);
   outline: none;
 }
 
@@ -173,7 +173,7 @@ body {
 }
 
 .currency-pill.active {
-  background: linear-gradient(135deg, #0F766E 0%, #115E59 100%);
+  background: linear-gradient(135deg, #2457D6 0%, #163B9E 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
 }
@@ -181,7 +181,7 @@ body {
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 
 .modal-overlay {
-  background: rgba(10, 26, 53, 0.4);
+  background: rgba(16, 27, 54, 0.48);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }

@@ -13,7 +13,7 @@ import { TELEGRAM_URL } from '@/lib/contacts';
 
 function App() {
   return (
-    <div className="min-h-screen bg-[#F6F4EE]">
+    <div className="min-h-screen bg-[#F4F7FB]">
       <Header />
       <main>
         <Hero />

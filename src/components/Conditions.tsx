@@ -12,10 +12,10 @@ export function Conditions() {
   const ref = useReveal<HTMLDivElement>();
 
   return (
-    <section id="conditions" className="py-20 sm:py-28 bg-gradient-to-b from-teal-50/30 to-white scroll-mt-20">
+    <section id="conditions" className="py-20 sm:py-28 bg-gradient-to-b from-blue-50/45 to-white scroll-mt-20">
       <div ref={ref} className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="reveal text-center max-w-2xl mx-auto mb-14">
-          <p className="text-sm font-semibold text-[#0F766E] uppercase tracking-wider mb-3">Условия</p>
+          <p className="text-sm font-semibold text-[#2457D6] uppercase tracking-wider mb-3">Условия</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
             Не обещания. Понятные условия.
           </h2>
@@ -27,7 +27,7 @@ export function Conditions() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {conditions.map((item) => (
             <div key={item.title} className="reveal card-shadow bg-white border border-gray-100 rounded-2xl p-7">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-50 to-teal-100/50 flex items-center justify-center text-[#0F766E] mb-5">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center text-[#2457D6] mb-5">
                 <item.icon className="w-6 h-6" strokeWidth={1.8} />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
