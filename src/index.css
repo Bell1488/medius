@@ -93,6 +93,17 @@ body {
     url('/hero-back.png') center top / cover no-repeat;
 }
 
+@media (max-width: 639px) {
+  .hero-bg {
+    background-image:
+      linear-gradient(180deg, rgba(244, 247, 251, 0.72) 0%, rgba(244, 247, 251, 0.96) 86%),
+      url('/hero-back-mobile.png');
+    background-position: center top;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+
 .grid-pattern {
   background-image:
     linear-gradient(rgba(36, 87, 214, 0.055) 1px, transparent 1px),
