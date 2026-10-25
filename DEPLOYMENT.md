@@ -162,12 +162,26 @@ ufw --force enable
 
 ```bash
 cd /var/www/medius
+git remote set-url origin https://github.com/Bell1488/medius.git
+git remote -v
+git fetch origin
 git pull --ff-only origin main
 npm ci
 VITE_YANDEX_METRIKA_ID=113716616 npm run build
 systemctl restart medius
 systemctl status medius --no-pager
 ```
+
+Проверьте, что `git remote -v` показывает `https://github.com/Bell1488/medius.git`. Если каталог раньше клонировали из другого репозитория, одного `git pull` недостаточно: он продолжает получать код с прежнего `origin`.
+
+После запуска сравните локальный ответ приложения с HTML из сборки:
+
+```bash
+curl -sS http://127.0.0.1:8787/ | grep -i '<title>'
+grep -i '<title>' /var/www/medius/dist/index.html
+```
+
+В обоих выводах должно быть `MediusObmen.cc`. Если заголовки разные, сначала проверьте `git remote -v`, затем выполните fetch, fast-forward pull и production build.
 
 ## Локальный запуск
 
