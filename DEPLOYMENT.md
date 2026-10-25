@@ -183,6 +183,32 @@ grep -i '<title>' /var/www/medius/dist/index.html
 
 В обоих выводах должно быть `MediusObmen.cc`. Если заголовки разные, сначала проверьте `git remote -v`, затем выполните fetch, fast-forward pull и production build.
 
+Если локальный `dist` уже содержит Medius, а домен показывает другой сайт, проверьте backend и Nginx отдельно:
+
+```bash
+systemctl cat medius
+curl -sS http://127.0.0.1:8787/ | grep -i '<title>'
+curl -k -sS --resolve mediusobmen.cc:443:127.0.0.1 https://mediusobmen.cc/ | grep -i '<title>'
+```
+
+Первый `curl` должен показать Medius. Если он показывает ProRest, systemd запустил не тот `server.mjs` или старый процесс всё ещё занимает порт. Проверьте `ExecStart`, `WorkingDirectory` и `ss -ltnp | grep ':8787'`.
+
+Если первый `curl` показывает Medius, а второй ProRest, запрос попадает в старый или дублирующий HTTPS-vhost. Найдите все активные конфигурации:
+
+```bash
+grep -RInE 'server_name|proxy_pass|listen .*443|default_server' /etc/nginx/sites-enabled /etc/nginx/conf.d
+```
+
+В vhost для `mediusobmen.cc` должен быть `proxy_pass http://127.0.0.1:8787;`. Старый vhost ProRest нужно отключить, если он больше не используется:
+
+```bash
+rm -f /etc/nginx/sites-enabled/prorest
+nginx -t
+systemctl reload nginx
+```
+
+Удаляйте только ссылку на фактически неиспользуемый файл после проверки его имени в выводе `grep`.
+
 ## Локальный запуск
 
 В первом терминале запустите `npm run build`, затем `npm run server`. Во втором выполните `npm run dev -- --host 127.0.0.1` и откройте `http://127.0.0.1:5173`. Локальные заявки требуют Telegram-переменных; без них API вернёт `503`.
