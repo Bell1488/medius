@@ -30,7 +30,7 @@ export function Pricing() {
                 <Calculator className="w-6 h-6" strokeWidth={1.8} />
               </div>
               <h3 className="text-base font-semibold text-gray-900">{tier.label}</h3>
-              <p className="text-3xl font-bold text-gradient my-3">{tier.rate}</p>
+              <p className="break-words text-3xl font-bold text-gradient my-3 md:text-2xl lg:text-3xl">{tier.rate}</p>
               <p className="text-sm text-gray-400 leading-relaxed">{tier.desc}</p>
             </div>
           ))}

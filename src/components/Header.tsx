@@ -41,19 +41,19 @@ export function Header() {
           <span className="text-lg font-bold tracking-tight text-[#101B36]">MediusObmen<span className="text-[#F2764B]">.cc</span></span>
         </button>
 
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden xl:flex items-center gap-1">
           {navLinks.map((link) => (
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#2457D6] transition-colors rounded-lg hover:bg-[#E8F1FF]"
+            className="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-600 hover:text-[#2457D6] transition-colors rounded-lg hover:bg-[#E8F1FF]"
             >
               {link.label}
             </button>
           ))}
           <button
             onClick={() => scrollTo('#calculator')}
-            className="ml-3 px-5 py-2.5 text-sm font-semibold text-white btn-gradient rounded-xl"
+            className="ml-2 whitespace-nowrap px-3 py-2.5 text-sm font-semibold text-white btn-gradient rounded-xl"
           >
             Начать обмен
           </button>
@@ -62,7 +62,10 @@ export function Header() {
         </nav>
 
         <button
-          className="md:hidden w-10 h-10 flex items-center justify-center text-gray-700"
+          className="xl:hidden w-10 h-10 shrink-0 flex items-center justify-center text-gray-700"
+          aria-label={mobileOpen ? 'Закрыть меню' : 'Открыть меню'}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-navigation"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -70,8 +73,10 @@ export function Header() {
       </div>
 
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 bg-white/95 backdrop-blur-xl ${
-          mobileOpen ? 'max-h-96 border-b border-gray-100' : 'max-h-0'
+        id="mobile-navigation"
+        aria-hidden={!mobileOpen}
+        className={`xl:hidden transition-all duration-300 bg-white/95 backdrop-blur-xl ${
+          mobileOpen ? 'visible max-h-[calc(100dvh-5rem)] overflow-y-auto border-b border-gray-100' : 'invisible max-h-0 overflow-hidden'
         }`}
       >
         <nav className="flex flex-col px-5 py-3">

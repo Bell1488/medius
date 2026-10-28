@@ -73,7 +73,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="lg:pt-2">
+          <div className="min-w-0 lg:pt-2">
             <ExchangeCalculator />
           </div>
         </div>
